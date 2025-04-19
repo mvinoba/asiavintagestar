@@ -57,35 +57,14 @@
     </footer>
 
     <script>
-      // --- Header Shrink on Scroll Logic ---
-      let lastScrollY = window.scrollY;
-      let ticking = false;
-      const handleScroll = () => {
-          lastScrollY = window.scrollY;
-          if (!ticking) {
-              window.requestAnimationFrame(() => {
-                  if (lastScrollY > 30) {
-                      document.body.classList.add('scrolled');
-                  } else {
-                      document.body.classList.remove('scrolled');
-                  }
-                  ticking = false;
-              });
-              ticking = true;
-          }
-      };
-
       // --- Initial Setup on DOM Load ---
       document.addEventListener('DOMContentLoaded', () => {
+          // Update footer year
           const yearSpan = document.getElementById('year');
           if(yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
 
-          // Add scroll listener
-          window.addEventListener('scroll', handleScroll, { passive: true });
-
-          // Initial check in case page loads already scrolled
-           handleScroll();
+          // Scroll handling logic removed from this page
       });
     </script>
 </body>
-</html> 
+</html>

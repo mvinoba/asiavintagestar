@@ -45,7 +45,7 @@
       <ul>
         <li><strong>Editores de Conteúdo:</strong> Ajudar a escrever notícias, análises, e manter o site atualizado.</li>
         <li><strong>Gestores de Redes Sociais:</strong> Criar posts envolventes e interagir com a nossa comunidade online.</li>
-        <li><strong>Equipa de Eventos:</strong> Ajudar a planejar e executar encontros, workshops ou outras atividades.</li>
+        <li><strong>Equipe de Eventos:</strong> Ajudar a planejar e executar encontros, workshops ou outras atividades.</li>
         <li><strong>Designers Gráficos/Vídeo:</strong> Criar visuais apelativos para o site e redes sociais.</li>
       </ul>
       <p>Se tem vontade de aprender, trabalhar em equipa e partilhar o seu amor pela cultura asiática, gostaríamos muito de conhecer você!</p>
@@ -60,35 +60,14 @@
     </footer>
 
     <script>
-      // --- Header Shrink on Scroll Logic ---
-      let lastScrollY = window.scrollY;
-      let ticking = false;
-      const handleScroll = () => {
-          lastScrollY = window.scrollY;
-          if (!ticking) {
-              window.requestAnimationFrame(() => {
-                  if (lastScrollY > 30) {
-                      document.body.classList.add('scrolled');
-                  } else {
-                      document.body.classList.remove('scrolled');
-                  }
-                  ticking = false;
-              });
-              ticking = true;
-          }
-      };
-
       // --- Initial Setup on DOM Load ---
       document.addEventListener('DOMContentLoaded', () => {
+          // Update footer year
           const yearSpan = document.getElementById('year');
           if(yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
 
-          // Add scroll listener
-          window.addEventListener('scroll', handleScroll, { passive: true });
-
-          // Initial check in case page loads already scrolled
-           handleScroll();
+          // Scroll handling logic removed from this page
       });
     </script>
 </body>
-</html> 
+</html>
