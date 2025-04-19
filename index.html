@@ -446,12 +446,12 @@ footer {
     body.scrolled header { backdrop-filter: blur(20px) saturate(170%); -webkit-backdrop-filter: blur(20px) saturate(170%); }
       }
 
-      @media (max-width: 380px) {
+      @media (max-width: 420px) {
          .brand-wrap img { height: clamp(65px, 17vw, 80px); } /* Adjust logo clamp */
           body.scrolled .brand-wrap img { height: clamp(55px, 14vw, 70px); }
           /* Further reduce aurora effects */
           header::before, header::after { filter: blur(40px); opacity: 0.25; }
-         .social-links { gap: 0.4rem; }
+         .social-links { gap: 0.15rem; }
          .social-links a { width: 34px; height: 34px; font-size: 1rem;}
       }
     </style>
