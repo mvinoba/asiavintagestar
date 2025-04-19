@@ -11,458 +11,23 @@
     />
     <!-- Font Awesome CDN -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-    <style>
-       /* ====== BRAND SYSTEM & THEME ====== */
-      /* ====== BRAND SYSTEM & THEME ====== */
-:root {
-    /* MODIFIED: Pinkish/Blackish Palette */
-    --brand-vibrant-pink: #F72585; /* Keep the vibrant one */
-    --brand-magenta: #D43790;      /* Deeper Pink/Magenta */
-    --brand-dark-purple: #2B0B3F;  /* Very Dark Purple (Blackish) */
-    --brand-near-black: #1A0526;   /* Even Darker for contrast/accents */
-
-    --glow-color-pink: rgba(247, 37, 133, 0.55); /* Slightly stronger pink glow */
-    --glow-color-magenta: rgba(212, 55, 144, 0.4); /* Magenta glow option */
-
-    /* RGB versions */
-    --brand-vibrant-pink-rgb: 247, 37, 133;
-    --brand-magenta-rgb: 212, 55, 144;
-    --brand-dark-purple-rgb: 43, 11, 63;
-    --brand-near-black-rgb: 26, 5, 38;
-
-    --bg-light: #FFF8FB; /* Slightly adjusted light bg */
-    --bg-card: rgba(255, 250, 253, 0.88); /* Slightly pinkish tinted card */
-    --bg-card-loading: linear-gradient(
-        100deg,
-        rgba(255, 248, 252, 0.7) 40%,
-        rgba(255, 255, 255, 0.9) 50%,
-        rgba(255, 248, 252, 0.7) 60%
-    );
-    --txt-dark: #1A0526; /* Use the near-black for text */
-    --txt-light: #ffffff;
-    --radius: 1rem;
-    /* MODIFIED: Shadows using darker tones */
-    --shadow-base: 0 8px 25px rgba(var(--brand-dark-purple-rgb), 0.08);
-    --shadow-hover: 0 14px 35px rgba(var(--brand-magenta-rgb), 0.18); /* Magenta shadow on hover */
-
-    --transition-speed: 0.4s;
-    --transition-speed-fast: 0.25s;
-    --transition-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
-    /* FIX 1: Explicit initial header height variable (adjust clamp values if needed) */
-    --header-height-initial: clamp(6.5rem, 16vw, 8.5rem); /* Slightly increased range */
-}
-
-/* ====== RESET & BASE ====== */
-*, *::before, *::after {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-}
-
-html, body {
-    height: 100%;
-}
-
-body {
-    font-family: 'Poppins', sans-serif;
-    background-color: var(--bg-light);
-    /* MODIFIED: Body background with new accents */
-    background-image: radial-gradient(circle at 15% 15%, rgba(var(--brand-magenta-rgb), 0.04) 0%, transparent 50%),
-                      radial-gradient(circle at 85% 80%, rgba(var(--brand-vibrant-pink-rgb), 0.05) 0%, transparent 50%),
-                      linear-gradient(180deg, var(--bg-light) 80%, #fff5fc 100%);
-    color: var(--txt-dark); /* Using near-black text */
-    display: flex;
-    flex-direction: column;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    overflow-x: hidden;
-    padding-top: 0;
-}
-
-/* ====== HERO / HEADER ====== */
-
-@keyframes gradient-flow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
-}
-
-@keyframes aurora-move {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-    50% { transform: translate(15px, -10px) scale(1.05); opacity: 0.6; }
-    100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
-}
-@keyframes aurora-move-alt {
-    0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-    50% { transform: translate(-10px, 15px) scale(1.1); opacity: 0.3; }
-    100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
-}
-
-header {
-    position: sticky;
-    top: 0;
-    left: 0;
-    width: 100%;
-    z-index: 100;
-    padding: clamp(0.8rem, 2vw, 1.2rem) 1.5rem; /* Reduced vertical padding slightly */
-    color: var(--txt-light);
-    text-align: center;
-    overflow: hidden;
-
-    /* FIX 1: Set minimum height */
-    min-height: var(--header-height-initial);
-    /* NEW: Use flex to help center content vertically within the min-height */
-    display: flex;
-    align-items: center;
-    justify-content: center; /* Center brand-wrap horizontally */
-    position: relative; /* Needed for absolute positioning of social links */
-
-
-    /* MODIFIED: Pink/Blackish Animated Gradient */
-    background: linear-gradient(115deg,
-        rgba(var(--brand-magenta-rgb), 0.85) 0%,       /* Start Magenta */
-        rgba(var(--brand-vibrant-pink-rgb), 0.8) 45%,  /* Vibrant Pink */
-        rgba(var(--brand-dark-purple-rgb), 0.9) 80%, /* Dark Purple */
-        rgba(var(--brand-near-black-rgb), 0.95) 100%    /* Near Black edge */
-    );
-    background-size: 250% 250%;
-    animation: gradient-flow 18s ease infinite;
-
-    /* MODIFIED: Glassmorphism - adjust blur/saturate if needed */
-    backdrop-filter: blur(20px) saturate(160%);
-    -webkit-backdrop-filter: blur(20px) saturate(160%);
-
-    /* MODIFIED: Border with pinkish tint */
-    border-bottom: 1px solid;
-    border-image: linear-gradient(to right,
-        rgba(var(--brand-vibrant-pink-rgb), 0.1),
-        rgba(var(--brand-vibrant-pink-rgb), 0.4),
-        rgba(var(--brand-vibrant-pink-rgb), 0.1)
-    ) 1;
-
-    /* MODIFIED: Shadow using dark purple + Pink Glow */
-    box-shadow: 0 6px 30px rgba(var(--brand-dark-purple-rgb), 0.2), /* Darker base shadow */
-                0 0 35px var(--glow-color-pink); /* Enhanced pink glow */
-
-    /* MODIFIED: Adjust transition properties */
-    transition: min-height var(--transition-speed-fast) ease-out, /* Transition min-height */
-                padding var(--transition-speed-fast) ease-out,
-                box-shadow var(--transition-speed) ease-out,
-                background-position var(--transition-speed) ease-out,
-                backdrop-filter var(--transition-speed) ease-out;
-    will-change: min-height, padding, box-shadow, backdrop-filter, background-position;
-}
-
-/* NEW: Since header is flex, brand-wrap doesn't need separate centering logic */
-/* .brand-wrap { ... } can be simplified or removed if only containing the image */
-/* Let's keep it for structure, but remove flex properties from it */
-.brand-wrap {
-     /* max-width: 1280px; */ /* Max width is handled by header padding/main */
-     /* margin: 0 auto; */ /* Centered by header's justify-content */
-     /* display: flex; */ /* Not needed */
-     /* align-items: center; */ /* Handled by header's align-items */
-     /* justify-content: center; */ /* Handled by header's justify-content */
-     padding: 0 env(safe-area-inset-left) 0 env(safe-area-inset-right);
-     position: relative; /* Ensure it's above pseudo-elements */
-     z-index: 10;
-     /* transition: transform var(--transition-speed-fast) ease-out; */ /* Might not be needed */
-     /* Add some margin if logo feels too close to edges vertically, although align-items should handle it */
-     margin: auto 0; /* Vertical centering within flex container */
-}
-
-
-/* MODIFIED: Aurora Bubbles using new pinks */
-header::before,
-header::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(70px); /* Slightly more blur */
-    z-index: 1;
-    pointer-events: none;
-    will-change: transform, opacity;
-}
-
-header::before {
-    width: clamp(200px, 40vw, 350px);
-    height: clamp(200px, 40vw, 350px);
-    /* Use Magenta */
-    background: radial-gradient(circle, rgba(var(--brand-magenta-rgb), 0.6), transparent 70%);
-    top: -30%;
-    left: 5%;
-    animation: aurora-move 25s infinite alternate ease-in-out;
-    animation-delay: -5s;
-}
-
-header::after {
-    width: clamp(250px, 50vw, 400px);
-    height: clamp(250px, 50vw, 400px);
-    /* Use Vibrant Pink */
-    background: radial-gradient(circle, rgba(var(--brand-vibrant-pink-rgb), 0.5), transparent 70%);
-    bottom: -40%;
-    right: 10%;
-    animation: aurora-move-alt 30s infinite alternate ease-in-out;
-}
-
-
-.brand-wrap img {
-    display: block; /* Ensure image behaves like a block */
-    height: clamp(75px, 15vw, 120px); /* Adjusted clamp for slightly smaller logo within taller header */
-    width: auto;
-    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.4)); /* Slightly stronger shadow */
-    transition: height var(--transition-speed-fast) ease-out,
-                filter var(--transition-speed-fast) ease-out;
-    will-change: height, filter;
-    /* Make sure image doesn't prevent header centering */
-    vertical-align: middle; /* Helps sometimes with inline/block elements */
-}
-
-/* -- Styles for Scrolled Header -- */
-body.scrolled header {
-    /* FIX 1: Reduce min-height on scroll */
-    min-height: clamp(4.5rem, 12vw, 5.5rem); /* Adjust target scrolled height */
-    padding: 0.4rem 1.5rem; /* Keep padding adjustment */
-    background-position: 50% 50%;
-    backdrop-filter: blur(24px) saturate(170%);
-    -webkit-backdrop-filter: blur(24px) saturate(170%);
-    /* MODIFIED: Scrolled shadow/glow */
-    box-shadow: 0 8px 40px rgba(var(--brand-dark-purple-rgb), 0.25),
-                0 0 40px rgba(var(--glow-color-pink), 0.6);
-    border-image: linear-gradient(to right,
-        rgba(var(--brand-vibrant-pink-rgb), 0.15),
-        rgba(var(--brand-vibrant-pink-rgb), 0.5),
-        rgba(var(--brand-vibrant-pink-rgb), 0.15)
-    ) 1;
-}
-
-body.scrolled .brand-wrap img {
-    height: clamp(60px, 11vw, 85px); /* Adjust shrunk logo size */
-    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
-}
-
-/* Social Links Styling - Adjust hover glow */
-.social-links {
-    position: absolute; /* Position relative to header */
-    top: 50%;
-    transform: translateY(-50%);
-    right: max(1.5rem, env(safe-area-inset-right));
-    display: flex;
-    align-items: center;
-    gap: 0.8rem;
-    z-index: 10;
-}
-
-.social-links a {
-    color: var(--txt-light);
-    text-decoration: none;
-    font-size: 1.25rem;
-    width: 42px;
-    height: 42px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 50%;
-    /* MODIFIED: Background using dark purple */
-    background-color: rgba(var(--brand-near-black-rgb), 0.2);
-    border: 1px solid rgba(var(--brand-vibrant-pink-rgb), 0.25); /* Pinkish border */
-    transition: all var(--transition-speed-fast) ease-out;
-    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
-    will-change: transform, background-color, box-shadow, border-color;
-    backdrop-filter: blur(8px); /* Slightly increased blur */
-    -webkit-backdrop-filter: blur(8px);
-}
-
-.social-links a:hover,
-.social-links a:focus-visible {
-    opacity: 1;
-    transform: translateY(-4px) scale(1.1);
-    /* MODIFIED: Hover background */
-    background-color: rgba(var(--brand-vibrant-pink-rgb), 0.2);
-    border-color: rgba(var(--brand-vibrant-pink-rgb), 0.6);
-    color: #fff;
-    /* MODIFIED: Hover glow using pink */
-    box-shadow: 0 5px 20px var(--glow-color-pink);
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6); /* Enhance text glow */
-    outline: none;
-}
-
-/* ====== GRID WRAPPER ====== */
-main {
-    flex: 1;
-    padding: 2rem max(1.5rem, env(safe-area-inset-left)) 3rem max(1.5rem, env(safe-area-inset-right));
-    position: relative;
-    z-index: 5;
-    max-width: 1320px; /* Max width for the content area */
-    margin-left: auto;
-    margin-right: auto;
-    width: 100%;
-    margin-top: calc(var(--header-height-initial) + 1rem);
-    transition: margin-top var(--transition-speed-fast) ease-out;
-}
-
-/* Update main margin-top when header is scrolled */
-body.scrolled main {
-    margin-top: calc(clamp(4.5rem, 12vw, 5.5rem) + 1rem); /* Match scrolled min-height */
-}
-
-.grid {
-    display: grid;
-    /* This is the key rule for responsive columns */
-    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
-    gap: clamp(1.5rem, 4vw, 2rem); /* Responsive gap */
-    min-height: 100px; /* Ensure grid has some height even when empty */
-}
-
-.grid p { /* Style for the loading/error message */
-    grid-column: 1 / -1; /* Make the paragraph span all columns */
-    text-align: center;
-    padding: 2rem;
-    color: var(--txt-dark);
-    opacity: 0.8;
-}
-
-/* ====== CARD STYLES ====== */
-/* (Keep existing card styles, ensure contrast with new text color is ok) */
-@keyframes pulse-bg {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-.card {
-    position: relative;
-    border-radius: var(--radius);
-    overflow: hidden;
-    background-color: var(--bg-card); /* Using updated bg-card */
-    background-image: var(--bg-card-loading);
-    background-size: 200% 100%;
-    animation: pulse-bg 1.8s linear infinite;
-    box-shadow: var(--shadow-base); /* Using updated shadow */
-    opacity: 0;
-    transform: translateY(30px) scale(0.98);
-    transition: transform var(--transition-speed) var(--transition-ease),
-                opacity var(--transition-speed) ease-out,
-                box-shadow var(--transition-speed) var(--transition-ease);
-    will-change: transform, opacity, box-shadow;
-    -webkit-tap-highlight-color: transparent;
-    min-height: 300px;
-     border: 1px solid rgba(var(--brand-dark-purple-rgb), 0.1); /* Subtle dark border */
-}
-
-      .card.loaded {
-          animation: none;
-          background-image: none;
-          background-color: var(--bg-card);
-      }
-
-      .card.reveal {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-      }
-
-      .card:active {
-          @media (hover: none) {
-              transform: scale(0.97);
-              opacity: 0.9;
-              transition-duration: var(--transition-speed-fast);
-          }
-      }
-
-      .card blockquote.instagram-media {
-          width: 100% !important;
-          max-width: 100% !important;
-          min-width: 0 !important;
-          margin: 0 !important;
-          padding: 0 !important;
-          box-shadow: none !important;
-          border: none !important;
-          background: transparent !important;
-          word-wrap: break-word;
-          overflow-wrap: break-word;
-          -webkit-hyphens: auto;
-          -moz-hyphens: auto;
-          hyphens: auto;
-          display: block;
-      }
-
-      .card iframe.instagram-media {
-          max-width: 100% !important;
-          width: 100% !important;
-          min-width: 0 !important;
-          display: block;
-      }
-
-
-@media (hover: hover) and (pointer: fine) {
-    .card:hover {
-        transform: translateY(-6px) scale(1.02);
-        box-shadow: var(--shadow-hover); /* Using updated hover shadow */
-    }
-}
-
-
-/* ====== FOOTER ====== */
-footer {
-    /* MODIFIED: Footer gradient with new colors */
-    background: linear-gradient(135deg, var(--brand-dark-purple), var(--brand-magenta));
-    color: var(--txt-light);
-    text-align: center;
-    font-size: 0.9rem;
-    padding: 1.5rem max(1.5rem, env(safe-area-inset-left)) 1.5rem max(1.5rem, env(safe-area-inset-right));
-    margin-top: 3rem;
-    text-shadow: 0 1px 3px rgba(0,0,0,0.3); /* Stronger shadow for contrast */
-    position: relative;
-    z-index: 50;
-    border-top: 1px solid rgba(var(--brand-vibrant-pink-rgb), 0.15); /* Pinkish top border */
-}
-
-
-      /* ====== RESPONSIVE TWEAKS ====== */
-      @media (max-width: 768px) {
-         .social-links {
-              gap: 0.6rem; /* Closer icons on smaller screens */
-          }
-          .social-links a {
-              width: 38px;
-              height: 38px;
-              font-size: 1.15rem;
-          }
-          /* Reduce aurora blur/size slightly on smaller screens */
-          header::before, header::after { filter: blur(50px); } /* Reduce blur */
-          header::before { width: clamp(150px, 35vw, 250px); height: clamp(150px, 35vw, 250px); }
-          header::after { width: clamp(200px, 45vw, 300px); height: clamp(200px, 45vw, 300px); }
-      }
-
-      @media (max-width: 600px) {
-          .grid {
-              grid-template-columns: 1fr;
-              gap: 1.5rem;
-          }
-          :root { --header-height-initial: clamp(6rem, 15vw, 7.5rem); } /* Adjust initial height for mobile */
-    body.scrolled header { min-height: clamp(4rem, 11vw, 5rem); } /* Adjust scrolled height */
-    main { margin-top: calc(var(--header-height-initial) + 0.5rem); } /* Reduce space */
-    body.scrolled main { margin-top: calc(clamp(4rem, 11vw, 5rem) + 0.5rem); }
-
-    header { backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); }
-    body.scrolled header { backdrop-filter: blur(20px) saturate(170%); -webkit-backdrop-filter: blur(20px) saturate(170%); }
-      }
-
-      @media (max-width: 420px) {
-         .brand-wrap img { height: clamp(65px, 17vw, 80px); } /* Adjust logo clamp */
-          body.scrolled .brand-wrap img { height: clamp(55px, 14vw, 70px); }
-          /* Further reduce aurora effects */
-          header::before, header::after { filter: blur(40px); opacity: 0.25; }
-         .social-links { gap: 0.15rem; }
-         .social-links a { width: 34px; height: 34px; font-size: 1rem;}
-      }
-    </style>
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="style.css">
   </head>
   <body>
     <!-- ===== HERO ===== -->
     <header>
       <!-- Aurora bubbles are added via ::before and ::after pseudo-elements -->
       <div class="brand-wrap">
-        <img src="logo3.2.png" alt="Logo Asia Vintage Star" />
+        <a href="index.html">
+          <img src="logo3.2.png" alt="Logo Asia Vintage Star" />
+        </a>
       </div>
+      <nav>
+        <a href="sobre-nos.html">Sobre Nós</a>
+        <a href="seja-voluntario.html">Seja Voluntário</a>
+        <a href="contato.html">Contato</a>
+      </nav>
       <div class="social-links">
         <a href="https://www.instagram.com/asiavintagestar" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
           <i class="fa-brands fa-instagram" title="Instagram"></i>
@@ -614,7 +179,7 @@ footer {
           lastScrollY = window.scrollY;
           if (!ticking) {
               window.requestAnimationFrame(() => {
-                  if (lastScrollY > 30) { // Trigger shrink sooner
+                  if (lastScrollY > 80) { // Increased threshold
                       document.body.classList.add('scrolled');
                   } else {
                       document.body.classList.remove('scrolled');
@@ -630,14 +195,22 @@ footer {
           const yearSpan = document.getElementById('year');
           if(yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
 
+          // Explicitly set initial state
+          document.body.classList.remove('scrolled');
+
           // Load posts first
           loadInstagramPosts(); // This function now also calls setupCardObserver after processing
 
           // Add scroll listener
           window.addEventListener('scroll', handleScroll, { passive: true });
 
-          // Initial check in case page loads already scrolled
-           handleScroll();
+          // Delay initial check to prevent premature header shrinking on iPhones
+          setTimeout(() => {
+              // Initial check only if page is actually scrolled significantly
+              if (window.scrollY > 100) {
+                  handleScroll();
+              }
+          }, 500); // Increased delay to 500ms for better iPhone compatibility
       });
     </script>
   </body>

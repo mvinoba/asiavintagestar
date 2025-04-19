@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Seja Voluntário - Asia Vintage Star</title>
+    <!-- Google font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet"/>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" integrity="sha512-DTOQO9RWCH3ppGqcWaEA1BIZOC6xxalwEsw9c2QQeAIftl+Vegovlnee1c9QX4TctnWMn13TZye+giMm8e2LwA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <!-- Link to External CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- ===== HERO ===== -->
+    <header>
+      <div class="brand-wrap">
+        <a href="index.html">
+          <img src="logo3.2.png" alt="Logo Asia Vintage Star" />
+        </a>
+      </div>
+      <nav>
+          <a href="sobre-nos.html">Sobre Nós</a>
+          <a href="seja-voluntario.html">Seja Voluntário</a>
+          <a href="contato.html">Contato</a>
+      </nav>
+      <div class="social-links">
+        <a href="https://www.instagram.com/asiavintagestar" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+          <i class="fa-brands fa-instagram" title="Instagram"></i>
+        </a>
+        <a href="https://www.facebook.com/asiavintagestar" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+          <i class="fa-brands fa-facebook-f" title="Facebook"></i>
+        </a>
+        <a href="https://www.tiktok.com/@asiavintagestar" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+          <i class="fa-brands fa-tiktok" title="TikTok"></i>
+        </a>
+      </div>
+    </header>
+
+    <!-- ===== MAIN CONTENT ===== -->
+    <main>
+      <h1>Faça Parte da Nossa Estrela!</h1>
+      <p>Você é fã de K-dramas e K-idols? Tem paixão por criar conteúdo, organizar eventos ou simplesmente quer ajudar a nossa comunidade a crescer? A Asia Vintage Star está à procura de voluntários dedicados como você!</p>
+      <p>Procuramos pessoas entusiastas para várias funções:</p>
+      <ul>
+        <li><strong>Editores de Conteúdo:</strong> Ajudar a escrever notícias, análises, e manter o site atualizado.</li>
+        <li><strong>Gestores de Redes Sociais:</strong> Criar posts envolventes e interagir com a nossa comunidade online.</li>
+        <li><strong>Equipa de Eventos:</strong> Ajudar a planejar e executar encontros, workshops ou outras atividades.</li>
+        <li><strong>Designers Gráficos/Vídeo:</strong> Criar visuais apelativos para o site e redes sociais.</li>
+      </ul>
+      <p>Se tem vontade de aprender, trabalhar em equipa e partilhar o seu amor pela cultura asiática, gostaríamos muito de conhecer você!</p>
+      <div class="center-button">
+           <a href="mailto:contato@asiavintagestar.com?subject=Quero Ser Voluntário(a)" class="cta-button">Quero ser voluntário!</a>
+       </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      © <span id="year"></span> Asia Vintage Star — Todos os direitos reservados.
+    </footer>
+
+    <script>
+      // --- Header Shrink on Scroll Logic ---
+      let lastScrollY = window.scrollY;
+      let ticking = false;
+      const handleScroll = () => {
+          lastScrollY = window.scrollY;
+          if (!ticking) {
+              window.requestAnimationFrame(() => {
+                  if (lastScrollY > 30) {
+                      document.body.classList.add('scrolled');
+                  } else {
+                      document.body.classList.remove('scrolled');
+                  }
+                  ticking = false;
+              });
+              ticking = true;
+          }
+      };
+
+      // --- Initial Setup on DOM Load ---
+      document.addEventListener('DOMContentLoaded', () => {
+          const yearSpan = document.getElementById('year');
+          if(yearSpan) { yearSpan.textContent = new Date().getFullYear(); }
+
+          // Add scroll listener
+          window.addEventListener('scroll', handleScroll, { passive: true });
+
+          // Initial check in case page loads already scrolled
+           handleScroll();
+      });
+    </script>
+</body>
+</html> 

@@ -1,0 +1,620 @@
+/* ====== BRAND SYSTEM & THEME ====== */
+:root {
+    /* MODIFIED: Pinkish/Blackish Palette */
+    --brand-vibrant-pink: #F72585; /* Keep the vibrant one */
+    --brand-magenta: #D43790;      /* Deeper Pink/Magenta */
+    --brand-dark-purple: #2B0B3F;  /* Very Dark Purple (Blackish) */
+    --brand-near-black: #1A0526;   /* Even Darker for contrast/accents */
+
+    --glow-color-pink: rgba(247, 37, 133, 0.55); /* Slightly stronger pink glow */
+    --glow-color-magenta: rgba(212, 55, 144, 0.4); /* Magenta glow option */
+
+    /* RGB versions */
+    --brand-vibrant-pink-rgb: 247, 37, 133;
+    --brand-magenta-rgb: 212, 55, 144;
+    --brand-dark-purple-rgb: 43, 11, 63;
+    --brand-near-black-rgb: 26, 5, 38;
+
+    --bg-light: #FFF8FB; /* Slightly adjusted light bg */
+    --bg-card: rgba(255, 250, 253, 0.88); /* Slightly pinkish tinted card */
+    --bg-card-loading: linear-gradient(
+        100deg,
+        rgba(255, 248, 252, 0.7) 40%,
+        rgba(255, 255, 255, 0.9) 50%,
+        rgba(255, 248, 252, 0.7) 60%
+    );
+    --txt-dark: #1A0526; /* Use the near-black for text */
+    --txt-light: #ffffff;
+    --radius: 1rem;
+    /* MODIFIED: Shadows using darker tones */
+    --shadow-base: 0 8px 25px rgba(var(--brand-dark-purple-rgb), 0.08);
+    --shadow-hover: 0 14px 35px rgba(var(--brand-magenta-rgb), 0.18); /* Magenta shadow on hover */
+
+    --transition-speed: 0.4s;
+    --transition-speed-fast: 0.25s;
+    --transition-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+    /* FIX 1: Explicit initial header height variable (adjust clamp values if needed) */
+    --header-height-initial: clamp(6.5rem, 16vw, 8.5rem); /* Slightly increased range */
+}
+
+/* ====== RESET & BASE ====== */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: 'Poppins', sans-serif;
+    background-color: var(--bg-light);
+    /* MODIFIED: Body background with new accents */
+    background-image: radial-gradient(circle at 15% 15%, rgba(var(--brand-magenta-rgb), 0.04) 0%, transparent 50%),
+                      radial-gradient(circle at 85% 80%, rgba(var(--brand-vibrant-pink-rgb), 0.05) 0%, transparent 50%),
+                      linear-gradient(180deg, var(--bg-light) 80%, #fff5fc 100%);
+    color: var(--txt-dark); /* Using near-black text */
+    display: flex;
+    flex-direction: column;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+    padding-top: 0;
+}
+
+/* ====== HERO / HEADER ====== */
+
+@keyframes gradient-flow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes aurora-move {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+    50% { transform: translate(15px, -10px) scale(1.05); opacity: 0.6; }
+    100% { transform: translate(0, 0) scale(1); opacity: 0.4; }
+}
+@keyframes aurora-move-alt {
+    0% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+    50% { transform: translate(-10px, 15px) scale(1.1); opacity: 0.3; }
+    100% { transform: translate(0, 0) scale(1); opacity: 0.5; }
+}
+
+header {
+    position: sticky;
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 100;
+    padding: clamp(0.8rem, 2vw, 1.2rem) 1.5rem; /* Reduced vertical padding slightly */
+    color: var(--txt-light);
+    text-align: center;
+    overflow: hidden;
+
+    /* FIX 1: Set minimum height */
+    min-height: var(--header-height-initial);
+    /* NEW: Use flex to help center content vertically within the min-height */
+    display: flex;
+    align-items: center;
+    justify-content: space-between; /* Center brand-wrap horizontally */
+    position: relative; /* Needed for absolute positioning of social links */
+
+
+    /* MODIFIED: Pink/Blackish Animated Gradient */
+    background: linear-gradient(115deg,
+        rgba(var(--brand-magenta-rgb), 0.85) 0%,       /* Start Magenta */
+        rgba(var(--brand-vibrant-pink-rgb), 0.8) 45%,  /* Vibrant Pink */
+        rgba(var(--brand-dark-purple-rgb), 0.9) 80%, /* Dark Purple */
+        rgba(var(--brand-near-black-rgb), 0.95) 100%    /* Near Black edge */
+    );
+    background-size: 250% 250%;
+    animation: gradient-flow 18s ease infinite;
+
+    /* MODIFIED: Glassmorphism - adjust blur/saturate if needed */
+    backdrop-filter: blur(20px) saturate(160%);
+    -webkit-backdrop-filter: blur(20px) saturate(160%);
+
+    /* MODIFIED: Border with pinkish tint */
+    border-bottom: 1px solid;
+    border-image: linear-gradient(to right,
+        rgba(var(--brand-vibrant-pink-rgb), 0.1),
+        rgba(var(--brand-vibrant-pink-rgb), 0.4),
+        rgba(var(--brand-vibrant-pink-rgb), 0.1)
+    ) 1;
+
+    /* MODIFIED: Shadow using dark purple + Pink Glow */
+    box-shadow: 0 6px 30px rgba(var(--brand-dark-purple-rgb), 0.2), /* Darker base shadow */
+                0 0 35px var(--glow-color-pink); /* Enhanced pink glow */
+
+    /* MODIFIED: Adjust transition properties */
+    transition: min-height var(--transition-speed-fast) ease-out, /* Transition min-height */
+                padding var(--transition-speed-fast) ease-out,
+                box-shadow var(--transition-speed) ease-out,
+                background-position var(--transition-speed) ease-out,
+                backdrop-filter var(--transition-speed) ease-out;
+    will-change: min-height, padding, box-shadow, backdrop-filter, background-position;
+}
+
+.brand-wrap {
+     display: flex;
+     padding: 0;
+     position: relative;
+     z-index: 10;
+     flex-shrink: 0;
+}
+
+header::before,
+header::after {
+    content: '';
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(70px);
+    z-index: 1;
+    pointer-events: none;
+    will-change: transform, opacity;
+}
+
+header::before {
+    width: clamp(200px, 40vw, 350px);
+    height: clamp(200px, 40vw, 350px);
+    background: radial-gradient(circle, rgba(var(--brand-magenta-rgb), 0.6), transparent 70%);
+    top: -30%;
+    left: 5%;
+    animation: aurora-move 25s infinite alternate ease-in-out;
+    animation-delay: -5s;
+}
+
+header::after {
+    width: clamp(250px, 50vw, 400px);
+    height: clamp(250px, 50vw, 400px);
+    background: radial-gradient(circle, rgba(var(--brand-vibrant-pink-rgb), 0.5), transparent 70%);
+    bottom: -40%;
+    right: 10%;
+    animation: aurora-move-alt 30s infinite alternate ease-in-out;
+}
+
+
+.brand-wrap img {
+    display: block;
+    height: clamp(75px, 15vw, 120px);
+    width: auto;
+    filter: drop-shadow(0 8px 15px rgba(0,0,0,0.4));
+    transition: height var(--transition-speed-fast) ease-out,
+                filter var(--transition-speed-fast) ease-out;
+    will-change: height, filter;
+    vertical-align: middle;
+}
+
+body.scrolled header {
+    min-height: clamp(4.5rem, 12vw, 5.5rem);
+    padding: 0.4rem 1.5rem;
+    background-position: 50% 50%;
+    backdrop-filter: blur(24px) saturate(170%);
+    -webkit-backdrop-filter: blur(24px) saturate(170%);
+    box-shadow: 0 8px 40px rgba(var(--brand-dark-purple-rgb), 0.25),
+                0 0 40px rgba(var(--glow-color-pink), 0.6);
+    border-image: linear-gradient(to right,
+        rgba(var(--brand-vibrant-pink-rgb), 0.15),
+        rgba(var(--brand-vibrant-pink-rgb), 0.5),
+        rgba(var(--brand-vibrant-pink-rgb), 0.15)
+    ) 1;
+}
+
+body.scrolled .brand-wrap img {
+    height: clamp(60px, 11vw, 85px);
+    filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
+}
+
+/* ====== Header Navigation ====== */
+header nav {
+	display: flex;
+	align-items: center;
+	gap: clamp(1rem, 3vw, 1.8rem);
+	z-index: 10;
+    margin: 0 auto;
+}
+
+header nav a {
+	color: var(--txt-light);
+	text-decoration: none;
+	font-size: clamp(0.9rem, 1.8vw, 1.05rem);
+	font-weight: 600;
+	opacity: 0.85;
+	transition: opacity var(--transition-speed-fast) ease-out, transform var(--transition-speed-fast) ease-out;
+}
+
+header nav a:hover,
+header nav a:focus-visible {
+	opacity: 1;
+	transform: translateY(-2px);
+}
+
+/* ====== Social Links ====== */
+.social-links {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    right: max(1.5rem, env(safe-area-inset-right));
+    display: flex;
+    align-items: center;
+    gap: 0.8rem;
+    z-index: 10;
+    flex-shrink: 0;
+}
+
+.social-links a {
+    color: var(--txt-light);
+    text-decoration: none;
+    font-size: 1.25rem;
+    width: 42px;
+    height: 42px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(var(--brand-near-black-rgb), 0.2);
+    border: 1px solid rgba(var(--brand-vibrant-pink-rgb), 0.25);
+    transition: all var(--transition-speed-fast) ease-out;
+    text-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+    will-change: transform, background-color, box-shadow, border-color;
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+}
+
+.social-links a:hover,
+.social-links a:focus-visible {
+    opacity: 1;
+    transform: translateY(-4px) scale(1.1);
+    background-color: rgba(var(--brand-vibrant-pink-rgb), 0.2);
+    border-color: rgba(var(--brand-vibrant-pink-rgb), 0.6);
+    color: #fff;
+    box-shadow: 0 5px 20px var(--glow-color-pink);
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.6);
+    outline: none;
+}
+
+/* ====== GRID WRAPPER (INDEX PAGE) ====== */
+/* Styles specific to the main content area of index.html */
+main {
+    margin: 0 auto;
+    width: 100%;
+    max-width: 1350px;
+    padding: 0 1rem;
+    margin-top: calc(var(--header-height-initial) + 0rem);
+    transition: margin-top 0.3s ease-out;
+}
+
+body.scrolled main {
+    margin-top: calc(clamp(5.5rem, 14vw, 6.5rem) + 0rem);
+}
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+    gap: clamp(1.5rem, 4vw, 2rem);
+    min-height: 100px;
+}
+
+.grid p {
+    grid-column: 1 / -1;
+    text-align: center;
+    padding: 2rem;
+    color: var(--txt-dark);
+    opacity: 0.8;
+}
+
+/* ====== CARD STYLES (INDEX PAGE) ====== */
+@keyframes pulse-bg {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+.card {
+    position: relative;
+    border-radius: var(--radius);
+    overflow: hidden;
+    background-color: var(--bg-card);
+    background-image: var(--bg-card-loading);
+    background-size: 200% 100%;
+    animation: pulse-bg 1.8s linear infinite;
+    box-shadow: var(--shadow-base);
+    opacity: 0;
+    transform: translateY(30px) scale(0.98);
+    transition: transform var(--transition-speed) var(--transition-ease),
+                opacity var(--transition-speed) ease-out,
+                box-shadow var(--transition-speed) var(--transition-ease);
+    will-change: transform, opacity, box-shadow;
+    -webkit-tap-highlight-color: transparent;
+    min-height: 300px;
+     border: 1px solid rgba(var(--brand-dark-purple-rgb), 0.1);
+}
+
+.card.loaded {
+    animation: none;
+    background-image: none;
+    background-color: var(--bg-card);
+}
+
+.card.reveal {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+}
+
+.card:active {
+    @media (hover: none) {
+        transform: scale(0.97);
+        opacity: 0.9;
+        transition-duration: var(--transition-speed-fast);
+    }
+}
+
+.card blockquote.instagram-media {
+    width: 100% !important;
+    max-width: 100% !important;
+    min-width: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    box-shadow: none !important;
+    border: none !important;
+    background: transparent !important;
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    -webkit-hyphens: auto;
+    -moz-hyphens: auto;
+    hyphens: auto;
+    display: block;
+}
+
+.card iframe.instagram-media {
+    max-width: 100% !important;
+    width: 100% !important;
+    min-width: 0 !important;
+    display: block;
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .card:hover {
+        transform: translateY(-6px) scale(1.02);
+        box-shadow: var(--shadow-hover);
+    }
+}
+
+/* ====== SIMPLIFIED MAIN CONTENT (OTHER PAGES) ====== */
+/* Styles for main content area on sobre-nos, seja-voluntario, contato */
+/* Select main element *only if* it doesn't contain .grid */
+main:not(:has(.grid)) {
+    margin-top: calc(var(--header-height-initial) + 0.2rem);
+}
+
+body.scrolled main:not(:has(.grid)) {
+    margin-top: calc(clamp(4.5rem, 12vw, 5.5rem) + 0.2rem);
+}
+
+main:not(:has(.grid)) h1 {
+    color: var(--brand-magenta);
+    margin-bottom: 1.5rem;
+    font-size: clamp(2rem, 5vw, 2.8rem);
+    text-align: center;
+    text-shadow: 1px 1px 3px rgba(var(--brand-dark-purple-rgb), 0.1);
+}
+
+main:not(:has(.grid)) p {
+    line-height: 1.7;
+    margin-bottom: 1.2rem;
+    font-size: 1.05rem;
+}
+
+main:not(:has(.grid)) a {
+    cursor: pointer; /* Explicit pointer */
+    color: var(--brand-vibrant-pink);
+    text-decoration: none;
+    font-weight: 600;
+    transition: color var(--transition-speed-fast) ease, text-decoration var(--transition-speed-fast) ease, filter var(--transition-speed-fast) ease;
+}
+
+main:not(:has(.grid)) a:hover {
+    color: var(--brand-magenta);
+    text-decoration: underline;
+}
+
+main:not(:has(.grid)) p a:hover { /* Add brightness effect to links in paragraphs */
+    filter: brightness(1.1);
+}
+
+/* ====== SEJA VOLUNTARIO PAGE STYLES ====== */
+/* Styles specific to seja-voluntario.html */
+main:has(.cta-button) ul { /* Target ul only on the volunteer page */
+    list-style: none;
+    padding-left: 0;
+    margin-top: 1.5rem;
+    margin-bottom: 1.5rem;
+}
+
+main:has(.cta-button) li { /* Target li only on the volunteer page */
+    position: relative;
+    padding-left: 1.8em;
+    margin-bottom: 0.8rem;
+    font-size: 1.05rem;
+}
+
+main:has(.cta-button) li::before { /* Target li::before only on the volunteer page */
+    content: '\\f005'; /* Font Awesome star icon */
+    font-family: 'Font Awesome 6 Free';
+    font-weight: 900;
+    position: absolute;
+    left: 0;
+    top: 0.1em;
+    color: var(--brand-vibrant-pink);
+    font-size: 1em;
+}
+
+main .cta-button { /* Style for the call-to-action button */
+    cursor: pointer; /* Explicit pointer */
+    display: inline-block;
+    background-color: var(--brand-vibrant-pink);
+    color: var(--txt-light);
+    padding: 0.8rem 1.8rem;
+    border-radius: 50px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    margin-top: 1.5rem;
+    transition: transform var(--transition-speed-fast) ease-out, background-color var(--transition-speed-fast) ease-out, box-shadow var(--transition-speed-fast) ease-out;
+    box-shadow: 0 4px 15px rgba(var(--brand-vibrant-pink-rgb), 0.3);
+    text-align: center; /* Added for consistency if wrapped in div */
+}
+
+main .cta-button:hover,
+main .cta-button:focus-visible {
+    background-color: var(--brand-magenta);
+    transform: translateY(-3px);
+    box-shadow: 0 7px 20px rgba(var(--brand-magenta-rgb), 0.4);
+    outline: none;
+}
+
+.center-button { /* Helper to center the button */
+    text-align: center;
+}
+
+/* ====== CONTATO PAGE STYLES ====== */
+/* Styles specific to contato.html */
+main:has(.contact-links) { /* Target main only on contact page */
+    text-align: center; /* Center content */
+}
+
+.contact-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1.5rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+}
+
+.contact-links a { /* Styles specific to contact links in main */
+    cursor: pointer; /* Explicit pointer */
+    color: var(--brand-magenta); /* Changed icon color */
+    text-decoration: none;
+    font-size: 1.5rem;
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    /* background-color: rgba(var(--brand-near-black-rgb), 0.5); Removed background */
+    border: 1px solid rgba(var(--brand-magenta-rgb), 0.5); /* Adjusted border color/opacity */
+    transition: all var(--transition-speed-fast) ease-out;
+    /* text-shadow: 0 1px 3px rgba(0, 0, 0, 0.4); Removed text shadow */
+    will-change: transform, background-color, box-shadow, border-color, color;
+    box-shadow: none; /* Removed base shadow */
+}
+.contact-links a:hover,
+.contact-links a:focus-visible {
+    opacity: 1;
+    transform: translateY(-5px) scale(1.1);
+    background-color: var(--brand-magenta); /* Changed background on hover */
+    border-color: rgba(var(--brand-magenta-rgb), 0.5); /* Reverted to default state border color */
+    color: var(--txt-light); /* Make icon white on hover */
+    box-shadow: 0 8px 25px rgba(var(--brand-magenta-rgb), 0.4); /* Adjusted shadow to magenta */
+    /* text-shadow: 0 0 10px rgba(255, 255, 255, 0.7); Removed text shadow */
+    outline: none;
+}
+
+.contact-email {
+    margin-top: 2.5rem;
+    font-size: 1.1rem;
+}
+
+.contact-email i {
+    cursor: pointer; /* Explicit pointer */
+    margin-right: 0.5rem;
+    color: var(--brand-magenta);
+}
+
+/* Special rule for contact page header - hide social links */
+body:has(main > .contact-links) header .social-links {
+    display: none;
+}
+
+
+/* ====== FOOTER ====== */
+footer {
+    background: linear-gradient(135deg, var(--brand-dark-purple), var(--brand-magenta));
+    color: var(--txt-light);
+    text-align: center;
+    font-size: 0.9rem;
+    padding: 1.5rem max(1.5rem, env(safe-area-inset-left)) 1.5rem max(1.5rem, env(safe-area-inset-right));
+    margin-top: 3rem;
+    text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+    position: relative;
+    z-index: 50;
+    border-top: 1px solid rgba(var(--brand-vibrant-pink-rgb), 0.15);
+}
+
+/* ====== RESPONSIVE TWEAKS ====== */
+@media (max-width: 768px) {
+    .social-links { gap: 0.6rem; }
+    .social-links a { width: 38px; height: 38px; font-size: 1.15rem; }
+    header::before, header::after { filter: blur(50px); }
+    header::before { width: clamp(150px, 35vw, 250px); height: clamp(150px, 35vw, 250px); }
+    header::after { width: clamp(200px, 45vw, 300px); height: clamp(200px, 45vw, 300px); }
+    header nav { gap: 0.8rem; }
+    .contact-links { gap: 1rem; }
+    .contact-links a { width: 50px; height: 50px; font-size: 1.3rem; }
+    main {
+        margin-top: calc(var(--header-height-initial-mobile) + 0rem);
+    }
+    
+    body.scrolled main {
+        margin-top: calc(var(--header-height-scrolled-mobile) + 0rem);
+    }
+    
+    header { padding: 0.5rem 1rem; }
+}
+
+@media (max-width: 600px) {
+    .grid { grid-template-columns: 1fr; gap: 1.5rem;}
+    header {
+        flex-direction: column;
+        justify-content: center;
+        min-height: var(--header-height-initial);
+    }
+    .brand-wrap { margin-bottom: 0.5rem; }
+    header nav { order: 2; margin: 0.5rem auto; }
+    .social-links { position: static; transform: none; order: 3; margin: 0.5rem auto 0; }
+    body:has(main > .contact-links) header .social-links { display: none; } /* Ensure hidden */
+
+    :root {
+        --header-height-initial: clamp(12.5rem, 20vw, 9.5rem);
+    }
+    body.scrolled header { min-height: clamp(6.5rem, 16vw, 7rem); } /* Adjusted scrolled min height */
+
+    /* Restore and adjust margin-top for non-grid main elements */
+    main:not(:has(.grid)) {
+        /* Use the mobile initial header height variable */
+        margin-top: calc(var(--header-height-initial) - 8rem);
+    }
+
+    body.scrolled main:not(:has(.grid)) {
+        /* Use the mobile scrolled header height */
+        margin-top: calc(clamp(6.5rem, 16vw, 7rem) + 0.2rem);
+    }
+
+    header { backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); }
+    body.scrolled header { backdrop-filter: blur(20px) saturate(170%); -webkit-backdrop-filter: blur(20px) saturate(170%); }
+}
+
+@media (max-width: 420px) {
+    .brand-wrap { margin-bottom: 0.2rem; }
+    .brand-wrap img { height: clamp(65px, 17vw, 80px); }
+    body.scrolled .brand-wrap img { height: clamp(55px, 14vw, 70px); }
+    header::before, header::after { filter: blur(40px); opacity: 0.25; }
+    .social-links { gap: 0.15rem; }
+    header nav { gap: 0.6rem; }
+    .social-links a { width: 34px; height: 34px; font-size: 1rem;}
+    .contact-links a { width: 45px; height: 45px; font-size: 1.2rem; }
+} 
