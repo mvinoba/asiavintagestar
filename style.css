@@ -34,7 +34,7 @@
     --transition-speed-fast: 0.25s;
     --transition-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
     /* Explicit initial header height variable */
-    --header-height-initial: clamp(6.5rem, 16vw, 8.5rem);
+    --header-height-initial: clamp(12rem, 16vw, 8.5rem);
 }
 
 /* ====== RESET & BASE ====== */
@@ -272,7 +272,7 @@ main {
     width: 100%;
     max-width: 1350px;
     padding: 0 1rem;
-    margin-top: calc(var(--header-height-initial) + 0.2rem);
+    margin-top: calc(var(--header-height-initial) - 10rem);
     transition: margin-top var(--transition-speed-fast) ease-out;
 }
 
