@@ -1,0 +1,496 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Asia Vintage Star - Enhanced Mobile UI</title>
+    <!-- Google font -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      /* ====== BRAND SYSTEM & THEME ====== */
+      :root{
+          --pink-1: #FB72BC;
+          --pink-2: #FC84CB;
+          --pink-dark: #E44CA8;
+          --bg-light: #FFF8FC;
+          --bg-card: rgba(255, 255, 255, 0.8); /* Slightly more opaque */
+          --bg-card-loading: linear-gradient(
+              100deg,
+              rgba(255, 248, 252, 0.7) 40%, /* Slightly tinted version of bg-light */
+              rgba(255, 255, 255, 0.9) 50%,
+              rgba(255, 248, 252, 0.7) 60%
+          ); /* Gradient for loading pulse */
+          --txt-dark: #343434;
+          --txt-light: #ffffff;
+          --radius: 1rem;
+          --shadow-base: 0 8px 25px rgba(0, 0, 0, 0.08);
+          --shadow-hover: 0 14px 35px rgba(228, 76, 168, 0.2);
+          --transition-speed: 0.4s;
+          --transition-speed-fast: 0.2s; /* For tap feedback */
+          --transition-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
+          --header-height: clamp(4rem, 10vw, 6rem); /* Approximate initial header height */
+      }
+
+      /* ====== RESET & BASE ====== */
+      *, *::before, *::after {
+          box-sizing: border-box;
+          margin: 0;
+          padding: 0;
+      }
+
+      html, body {
+          height: 100%;
+      }
+
+      body {
+          font-family: 'Poppins', sans-serif;
+          background-color: var(--bg-light);
+          background-image: radial-gradient(circle at 50% 0%, rgba(255,255,255,0.5) 0%, transparent 60%),
+                            linear-gradient(180deg, var(--bg-light) 80%, #fff1f9 100%);
+          color: var(--txt-dark);
+          display: flex;
+          flex-direction: column;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
+          overflow-x: hidden;
+      }
+
+      /* ====== HERO / HEADER ====== */
+      header {
+          position: sticky; /* Make header sticky */
+          top: 0;
+          left: 0;
+          width: 100%;
+          padding: clamp(1rem, 2.5vw, 1.5rem) 1rem; /* Adjusted padding */
+          padding-bottom: calc(clamp(1rem, 2.5vw, 1.5rem) + 40px); /* Add space for angled cut */
+          background: linear-gradient(135deg, var(--pink-1), var(--pink-2));
+          color: var(--txt-light);
+          text-align: center;
+          box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+          z-index: 100; /* High z-index for sticky */
+          transition: padding var(--transition-speed-fast) ease-out,
+                      box-shadow var(--transition-speed-fast) ease-out;
+          will-change: padding, box-shadow;
+      }
+
+      /* Angled bottom (adjusted for sticky header) */
+      header::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          /* Position relative to the bottom of the *content* area, not the full padding */
+          bottom: 0px;
+          width: 100%;
+          height: 40px; /* Reduced height for angle */
+          background: var(--bg-light);
+          clip-path: polygon(0 0, 100% 75%, 100% 100%, 0 100%); /* Adjusted clip-path */
+          z-index: 5;
+          /* Match body background */
+          background-image: radial-gradient(circle at 50% -20%, rgba(255,255,255,0.5) 0%, transparent 60%),
+                            linear-gradient(180deg, var(--bg-light) 80%, #fff1f9 100%);
+          transition: height var(--transition-speed-fast) ease-out;
+      }
+
+      .brand-wrap {
+          max-width: 1280px;
+          margin: 0 auto;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 0.8rem; /* Slightly reduced gap */
+          padding: 0 env(safe-area-inset-left) 0 env(safe-area-inset-right);
+          position: relative;
+          z-index: 15;
+          transition: transform var(--transition-speed-fast) ease-out; /* For potential scaling */
+      }
+
+      .brand-wrap img {
+          height: clamp(36px, 7vw, 50px); /* Slightly smaller */
+          width: auto;
+          filter: drop-shadow(0 2px 4px rgba(0,0,0,0.2));
+          transition: height var(--transition-speed-fast) ease-out;
+      }
+
+      .brand-wrap h1 {
+          font-size: clamp(1.5rem, 4.5vw, 2.2rem); /* Slightly smaller */
+          font-weight: 600;
+          letter-spacing: .02em;
+          text-shadow: 0 1px 3px rgba(0,0,0,0.2);
+          transition: font-size var(--transition-speed-fast) ease-out;
+      }
+
+      /* -- Styles for Scrolled Header -- */
+      body.scrolled header {
+          padding-top: 0.5rem;
+          padding-bottom: calc(0.5rem + 30px); /* Adjust padding + angle */
+          box-shadow: 0 6px 20px rgba(0, 0, 0, 0.15); /* Enhance shadow */
+      }
+      body.scrolled header::after {
+          height: 30px; /* Smaller angle */
+          clip-path: polygon(0 0, 100% 65%, 100% 100%, 0 100%);
+      }
+      body.scrolled .brand-wrap img {
+          height: clamp(32px, 6vw, 40px); /* Shrink logo */
+      }
+      body.scrolled .brand-wrap h1 {
+          font-size: clamp(1.3rem, 4vw, 1.9rem); /* Shrink title */
+      }
+
+
+      /* ====== GRID WRAPPER ====== */
+      main {
+          flex: 1;
+          /* Remove margin-top as header is now sticky */
+          padding: 2rem max(1rem, env(safe-area-inset-left)) 3rem max(1rem, env(safe-area-inset-right));
+          position: relative;
+          z-index: 20; /* Below header but above body background effects */
+          max-width: 1320px;
+          margin-left: auto;
+          margin-right: auto;
+          width: 100%;
+      }
+
+      .grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(min(300px, 100%), 1fr));
+          gap: clamp(1.5rem, 4vw, 2rem);
+          /* Add min-height to prevent collapse while loading */
+          min-height: 100px;
+      }
+      .grid p { /* Style loading/error message */
+          grid-column: 1 / -1; /* Span full width */
+          text-align: center;
+          padding: 2rem;
+          color: var(--txt-dark);
+          opacity: 0.8;
+      }
+
+      /* ====== CARD STYLES ====== */
+      @keyframes pulse-bg {
+          0% { background-position: -200% 0; }
+          100% { background-position: 200% 0; }
+      }
+
+      .card {
+          position: relative;
+          border-radius: var(--radius);
+          overflow: hidden;
+          background-color: var(--bg-card); /* Base color */
+          /* Animated gradient for loading state */
+          background-image: var(--bg-card-loading);
+          background-size: 200% 100%;
+          animation: pulse-bg 1.8s linear infinite;
+          box-shadow: var(--shadow-base);
+          opacity: 0;
+          transform: translateY(30px) scale(0.98);
+          transition: transform var(--transition-speed) var(--transition-ease),
+                      opacity var(--transition-speed) ease-out,
+                      box-shadow var(--transition-speed) var(--transition-ease);
+          will-change: transform, opacity, box-shadow;
+          -webkit-tap-highlight-color: transparent; /* Remove blue tap highlight on iOS */
+          min-height: 300px; /* Default min-height */
+      }
+
+      /* Style when embed is likely loaded (it usually adds content) */
+      /* Use a class added by JS for more reliability */
+      .card.loaded {
+          animation: none;
+          background-image: none; /* Remove the gradient */
+          background-color: var(--bg-card); /* Ensure solid background */
+      }
+
+
+      /* Reveal animation class (added by JS) */
+      .card.reveal {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+      }
+
+      /* -- Mobile Tap Feedback -- */
+      .card:active {
+          /* Only apply if NOT using hover (i.e., likely touch device) */
+          @media (hover: none) {
+              transform: scale(0.97); /* Slightly more noticeable scale down */
+              opacity: 0.9;
+              transition-duration: var(--transition-speed-fast); /* Faster feedback */
+          }
+      }
+
+
+      /* Instagram Embed Specific Styling */
+      .card blockquote.instagram-media {
+          width: 100% !important;
+          max-width: 100% !important;
+          min-width: 0 !important;
+          margin: 0 !important;
+          padding: 0 !important;
+          box-shadow: none !important;
+          border: none !important;
+          /* Ensure embed background doesn't conflict */
+          background: transparent !important;
+          word-wrap: break-word;
+          overflow-wrap: break-word;
+          -webkit-hyphens: auto;
+          -moz-hyphens: auto;
+          hyphens: auto;
+          /* Min-height is on .card now */
+          display: block; /* Ensure it takes space */
+      }
+
+      .card iframe.instagram-media {
+          max-width: 100% !important;
+          width: 100% !important;
+          min-width: 0 !important;
+          display: block; /* Ensure layout consistency */
+      }
+
+
+      /* Hover effect (for devices with pointer) */
+      @media (hover: hover) and (pointer: fine) {
+          .card:hover {
+              transform: translateY(-5px) scale(1.03);
+              box-shadow: var(--shadow-hover);
+          }
+      }
+
+      /* ====== FOOTER ====== */
+      footer {
+          background: linear-gradient(135deg, var(--pink-1), var(--pink-2));
+          color: var(--txt-light);
+          text-align: center;
+          font-size: 0.9rem;
+          padding: 1.2rem max(1rem, env(safe-area-inset-left)) 1.2rem max(1rem, env(safe-area-inset-right));
+          margin-top: 2rem;
+          text-shadow: 0 1px 2px rgba(0,0,0,0.15);
+          position: relative; /* Ensure it's above potential sticky elements if needed */
+          z-index: 50;
+      }
+
+      /* ====== RESPONSIVE TWEAKS ====== */
+      @media (max-width: 600px) {
+          .grid {
+              grid-template-columns: 1fr;
+              gap: 1.5rem;
+          }
+          :root {
+              --radius: 0.8rem;
+          }
+          /* Adjust sticky header padding/angle less drastically on mobile */
+          header::after { height: 35px; }
+          body.scrolled header { padding-top: 0.4rem; padding-bottom: calc(0.4rem + 25px); }
+          body.scrolled header::after { height: 25px; }
+      }
+
+      @media (max-width: 380px) {
+          .brand-wrap h1 { font-size: 1.4rem; }
+          .brand-wrap img { height: 34px; }
+          body.scrolled .brand-wrap h1 { font-size: 1.2rem; }
+          body.scrolled .brand-wrap img { height: 30px; }
+          .grid { gap: 1rem; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ===== HERO ===== -->
+    <header>
+      <div class="brand-wrap">
+        <img src="logo.png" alt="Logo Asia Vintage Star" />
+        <h1>Asia Vintage Star</h1>
+      </div>
+    </header>
+
+    <!-- ===== GRID ===== -->
+    <main>
+      <!-- Grid will be populated by JavaScript -->
+      <div class="grid">
+        <p>Loading posts...</p>
+        <!-- Initial loading message -->
+      </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      © <span id="year"></span> Asia Vintage Star — Todos os direitos
+      reservados.
+    </footer>
+
+    <!-- Instagram embed loader -->
+    <script async src="//www.instagram.com/embed.js"></script>
+
+    <!-- SINGLE SCRIPT BLOCK FOR ALL LOGIC -->
+    <script>
+      // --- Global Variables & Elements ---
+      const grid = document.querySelector('.grid');
+      const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSwOoUC1FaaexqrEA6CtMnE46b4_5m28gSZUia3sm2mUUZA1EHxF-qHBwMSTFw0aR7o7N9rppNjmFLG/pub?gid=0&single=true&output=csv';
+      let intersectionObserver; // Declare observer globally to manage it
+
+      // --- Function to Load Posts from Google Sheet ---
+      async function loadInstagramPosts() {
+          // Clear any existing content only if loading succeeds later
+          // Keep the initial "Loading posts..." message for now
+          // grid.innerHTML = '<p>Loading posts...</p>';
+
+          try {
+              const response = await fetch(sheetUrl);
+              if (!response.ok) {
+                  throw new Error(`HTTP error! status: ${response.status}`);
+              }
+              const csvData = await response.text();
+              // Robust row splitting (handles different line endings)
+              const rows = csvData.split(/\r?\n/).slice(1); // Split by newline, skip header
+              rows.reverse();
+              grid.innerHTML = ''; // Clear loading message *before* adding cards
+
+              let postsFound = false;
+              rows.forEach(row => {
+                  // Handle potential commas within fields if CSV is complex (basic split here)
+                  const columns = row.split(',');
+                  const postUrl = columns[0] ? columns[0].trim() : null;
+                  // Check 'Active' column ('SIM'). Handle potential extra whitespace.
+                  const isActive = columns[1] && columns[1].trim().toUpperCase() === 'SIM';
+
+                  // Only process if URL is valid and row is marked Active
+                  if (isActive && postUrl && postUrl.startsWith('https://www.instagram.com/')) {
+                      postsFound = true;
+                      // Create the card structure dynamically
+                      const card = document.createElement('div');
+                      card.className = 'card'; // Add initial class for styling/loading
+
+                      const blockquote = document.createElement('blockquote');
+                      blockquote.className = 'instagram-media';
+                      blockquote.setAttribute('data-instgrm-permalink', postUrl);
+                      blockquote.setAttribute('data-instgrm-version', '14');
+                      // Add a non-breaking space inside, helps embeds initialize sometimes
+                      blockquote.innerHTML = ' ';
+
+                      card.appendChild(blockquote);
+                      grid.appendChild(card);
+                  }
+              });
+
+              if (!postsFound && grid.innerHTML === '') {
+                   grid.innerHTML = '<p>No posts to display right now.</p>';
+              }
+
+              // VERY IMPORTANT: Re-process embeds AFTER adding new blockquotes
+              if (window.instgrm) {
+                  // Delay slightly to ensure elements are fully in DOM? Sometimes helps.
+                  setTimeout(() => {
+                     window.instgrm.Embeds.process();
+                     // Setup observer AFTER processing, as processing might change DOM
+                     setupCardObserver();
+                  }, 100); // Small delay
+              } else {
+                   // If embed.js hasn't loaded yet, setup observer directly
+                   // Embeds might process automatically when the script loads later
+                   setupCardObserver();
+              }
+
+
+          } catch (error) {
+              console.error('Error loading Instagram posts:', error);
+              grid.innerHTML = '<p>Could not load posts. Please check your connection or try again later.</p>';
+          }
+      }
+
+      // --- Function to Setup Intersection Observer for Card Animations ---
+      function setupCardObserver() {
+          const cards = document.querySelectorAll('.card:not(.reveal)'); // Select only cards not yet revealed
+          if (cards.length === 0) return; // Don't run if no new cards
+
+          // Define observer options and callback HERE
+          const observerOptions = {
+              root: null, // relative to viewport
+              rootMargin: '0px',
+              threshold: 0.1 // Trigger when 10% of the card is visible
+          };
+
+          const observerCallback = (entries, observer) => {
+              entries.forEach((entry, index) => {
+                  if (entry.isIntersecting) {
+                      const card = entry.target;
+                      const delay = index * 100; // Stagger delay based on observation order
+                      card.style.transitionDelay = `${delay}ms`;
+                      card.classList.add('reveal');
+
+                      // Attempt to remove loading animation class more reliably
+                      // Check if the Instagram content seems loaded after animation starts
+                      setTimeout(() => {
+                          const instaEmbed = card.querySelector('.instagram-media iframe, .instagram-media .Embed');
+                          if (instaEmbed || card.querySelector('blockquote').innerHTML.trim().length > 10) { // Check if blockquote has content
+                              card.classList.add('loaded'); // Add class to stop CSS animation
+                          }
+                      }, delay + 500); // Check slightly after reveal animation should have progressed
+
+                      observer.unobserve(card); // Stop observing once revealed
+                  }
+              });
+          };
+
+          // Disconnect previous observer if exists, before creating a new one
+          if (intersectionObserver) {
+              intersectionObserver.disconnect();
+          }
+
+          // Create and activate the observer
+          intersectionObserver = new IntersectionObserver(observerCallback, observerOptions);
+          cards.forEach(card => {
+              intersectionObserver.observe(card);
+          });
+      }
+
+
+      // --- Header Shrink on Scroll Logic ---
+      let lastScrollY = window.scrollY;
+      let ticking = false; // For scroll performance optimization
+
+      const handleScroll = () => {
+          lastScrollY = window.scrollY;
+
+          if (!ticking) {
+              window.requestAnimationFrame(() => {
+                  if (lastScrollY > 50) { // Threshold to trigger shrink
+                      document.body.classList.add('scrolled');
+                  } else {
+                      document.body.classList.remove('scrolled');
+                  }
+                  ticking = false;
+              });
+              ticking = true;
+          }
+      };
+
+      // --- Initial Setup on DOM Load ---
+      document.addEventListener('DOMContentLoaded', () => {
+          // Set dynamic year in footer
+          const yearSpan = document.getElementById('year');
+          if(yearSpan) {
+              yearSpan.textContent = new Date().getFullYear();
+          }
+
+          // Load Instagram posts from the sheet
+          loadInstagramPosts();
+
+          // Attach scroll listener for header shrink effect
+          window.addEventListener('scroll', handleScroll, { passive: true });
+      });
+
+      // --- Optional: Re-process embeds on window load as a fallback ---
+      // window.addEventListener('load', () => {
+      //     if (window.instgrm) {
+      //         window.instgrm.Embeds.process();
+      //     }
+      //     // Re-check cards loading state after full page load + embed processing
+      //     document.querySelectorAll('.card:not(.loaded)').forEach(card => {
+      //         const instaEmbed = card.querySelector('.instagram-media iframe, .instagram-media .Embed');
+      //         if (instaEmbed || card.querySelector('blockquote').innerHTML.trim().length > 10) {
+      //            card.classList.add('loaded');
+      //         }
+      //     });
+      // });
+    </script>
+  </body>
+</html>
