@@ -214,6 +214,20 @@ header nav a {
 	font-weight: 600;
 	opacity: 0.85;
 	transition: opacity var(--transition-speed-fast) ease-out, transform var(--transition-speed-fast) ease-out;
+    text-transform: lowercase;
+    position: relative;
+    white-space: nowrap;
+}
+
+header nav a:not(:first-child)::before {
+    display: inline-block;
+    margin-right: 0.75em;
+    opacity: 0.6;
+    font-weight: bold;
+    font-size: 1.2em;
+    vertical-align: middle;
+    position: relative;
+    top: -0.05em;
 }
 
 header nav a:hover,
