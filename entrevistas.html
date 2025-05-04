@@ -3,7 +3,8 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Eventos - Asia Vintage Star</title>
+    <!-- Corrected title -->
+    <title>Entrevistas - Asia Vintage Star</title>
     <!-- Google font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
@@ -19,7 +20,7 @@
     <header>
       <!-- Aurora bubbles are added via ::before and ::after pseudo-elements -->
       <div class="brand-wrap">
-        <a href="index.html">
+        <a href="/">
           <img src="logo3.2.png" alt="Logo Asia Vintage Star" />
         </a>
       </div>
@@ -68,9 +69,8 @@
     <script>
       // --- Global Variables & Elements ---
       const grid = document.querySelector('.grid');
-      // IMPORTANT: You might need to change this URL or the filtering logic below
-      //            to load event-specific posts from your Google Sheet.
-      const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSwOoUC1FaaexqrEA6CtMnE46b4_5m28gSZUia3sm2mUUZA1EHxF-qHBwMSTFw0aR7o7N9rppNjmFLG/pub?gid=0&single=true&output=csv';
+      // IMPORTANT: Ensure this URL points to your published CSV sheet
+      const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSwOoUC1FaaexqrEA6CtMnE46b4_5m28gSZUia3sm2mUUZA1EHxF-qHBwMSTFw0aR7o7N9rppJjmFLG/pub?gid=0&single=true&output=csv';
       let intersectionObserver; // Declare observer globally to manage it
 
       // --- Function to Load Posts from Google Sheet ---
@@ -82,8 +82,8 @@
                   throw new Error(`HTTP error! status: ${response.status}`);
               }
               const csvData = await response.text();
-              const rows = csvData.split(/\r?\n/).slice(1);
-              rows.reverse();
+              const rows = csvData.split(/\r?\n/).slice(1); // Skip header row
+              rows.reverse(); // Display newest first
               grid.innerHTML = ''; // Clear loading message
 
               let postsFound = false;
@@ -91,13 +91,11 @@
                   const columns = row.split(',');
                   const postUrl = columns[0] ? columns[0].trim() : null;
                   const isActive = columns[1] && columns[1].trim().toUpperCase() === 'SIM';
+                  // Get the post type from the new column (index 2 for column C)
+                  const postType = columns[2] ? columns[2].trim().toLowerCase() : ''; // Handle empty/missing column
 
-                  // *** Potential Filter Area ***
-                  // You might add another column check here, e.g., if column 2 indicates "Event"
-                  // const postType = columns[2] ? columns[2].trim().toLowerCase() : '';
-                  // if (isActive && postType === 'evento' && postUrl && postUrl.startsWith('https://www.instagram.com/')) {
-
-                  if (isActive && postUrl && postUrl.startsWith('https://www.instagram.com/')) {
+                  // *** Filter for 'entrevista' type posts ***
+                  if (isActive && postUrl && postUrl.startsWith('https://www.instagram.com/') && postType === 'entrevista') {
                       postsFound = true;
                       const card = document.createElement('div');
                       card.className = 'card';
@@ -124,8 +122,11 @@
               });
 
               if (!postsFound && grid.innerHTML === '') {
-                   grid.innerHTML = '<p>Nenhum evento para mostrar no momento.</p>'; // Changed Empty Text
+                   grid.innerHTML = '<p>Nenhuma entrevista para mostrar no momento.</p>'; // Corrected Empty Text
+              } else if (grid.innerHTML === '') {
+                   grid.innerHTML = '<p>Nenhuma entrevista para mostrar no momento.</p>'; // Safety check
               }
+
 
               // Use setTimeout to ensure DOM updates before processing embeds
               setTimeout(() => {
@@ -138,7 +139,7 @@
 
           } catch (error) {
               console.error('Error loading Instagram posts:', error);
-              grid.innerHTML = '<p>Não foi possível carregar os eventos. Verifique sua conexão ou tente novamente mais tarde.</p>'; // Changed Error Text
+              grid.innerHTML = '<p>Não foi possível carregar as entrevistas. Verifique sua conexão ou tente novamente mais tarde.</p>'; // Corrected Error Text
           }
       }
 
@@ -227,4 +228,4 @@
       });
     </script>
   </body>
-</html> 
+</html>
