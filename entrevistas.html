@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Asia Vintage Star</title>
+    <title>Eventos - Asia Vintage Star</title>
     <!-- Google font -->
     <link
       href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap"
@@ -49,10 +49,10 @@
 
     <!-- ===== GRID ===== -->
     <main>
-      <div class="grid">
-        <p>Carregando posts...</p>
-        <!-- Posts will be loaded here -->
-      </div>
+        <div class="grid">
+            <p>Carregando entrevistas...</p>
+            <!-- Posts will be loaded here -->
+        </div>
     </main>
 
     <!-- ===== FOOTER ===== -->
@@ -64,10 +64,12 @@
     <!-- Instagram embed loader -->
     <script async src="//www.instagram.com/embed.js"></script>
 
-    <!-- SINGLE SCRIPT BLOCK FOR ALL LOGIC (No changes needed here for header style) -->
+    <!-- SINGLE SCRIPT BLOCK FOR ALL LOGIC -->
     <script>
       // --- Global Variables & Elements ---
       const grid = document.querySelector('.grid');
+      // IMPORTANT: You might need to change this URL or the filtering logic below
+      //            to load event-specific posts from your Google Sheet.
       const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSwOoUC1FaaexqrEA6CtMnE46b4_5m28gSZUia3sm2mUUZA1EHxF-qHBwMSTFw0aR7o7N9rppNjmFLG/pub?gid=0&single=true&output=csv';
       let intersectionObserver; // Declare observer globally to manage it
 
@@ -89,6 +91,11 @@
                   const columns = row.split(',');
                   const postUrl = columns[0] ? columns[0].trim() : null;
                   const isActive = columns[1] && columns[1].trim().toUpperCase() === 'SIM';
+
+                  // *** Potential Filter Area ***
+                  // You might add another column check here, e.g., if column 2 indicates "Event"
+                  // const postType = columns[2] ? columns[2].trim().toLowerCase() : '';
+                  // if (isActive && postType === 'evento' && postUrl && postUrl.startsWith('https://www.instagram.com/')) {
 
                   if (isActive && postUrl && postUrl.startsWith('https://www.instagram.com/')) {
                       postsFound = true;
@@ -117,7 +124,7 @@
               });
 
               if (!postsFound && grid.innerHTML === '') {
-                   grid.innerHTML = '<p>No posts to display right now.</p>';
+                   grid.innerHTML = '<p>Nenhum evento para mostrar no momento.</p>'; // Changed Empty Text
               }
 
               // Use setTimeout to ensure DOM updates before processing embeds
@@ -131,7 +138,7 @@
 
           } catch (error) {
               console.error('Error loading Instagram posts:', error);
-              grid.innerHTML = '<p>Could not load posts. Please check your connection or try again later.</p>';
+              grid.innerHTML = '<p>Não foi possível carregar os eventos. Verifique sua conexão ou tente novamente mais tarde.</p>'; // Changed Error Text
           }
       }
 
@@ -220,4 +227,4 @@
       });
     </script>
   </body>
-</html>
+</html> 
