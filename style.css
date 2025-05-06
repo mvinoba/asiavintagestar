@@ -33,9 +33,15 @@
     --transition-speed: 0.4s;
     --transition-speed-fast: 0.25s;
     --transition-ease: cubic-bezier(0.25, 0.8, 0.25, 1);
-    /* Explicit initial header height variable */
-    --header-height-initial: clamp(12rem, 16vw, 8.5rem);
-    --header-height-scrolled: clamp(4.5rem, 12vw, 5.5rem); /* Define scrolled height variable */
+
+    /* Explicit initial header height variables (UPDATED VALUES) */
+    /* Reduced initial height significantly */
+    --header-height-desktop-initial: clamp(6rem, 8vw, 7rem);
+    --header-height-desktop-scrolled: clamp(4.5rem, 6vw, 5rem); /* Also slightly reduced */
+    /* ADDED MOBILE HEIGHT VARIABLES (USING NEW, SLIGHTLY LARGER VALUES) */
+    /* Reduced mobile height */
+    --header-height-mobile-initial: clamp(4.5rem, 12vw, 5.5rem);
+    --header-height-mobile-scrolled: clamp(4rem, 10vw, 4.5rem);
 }
 
 /* ====== RESET & BASE ====== */
@@ -63,9 +69,9 @@ body {
     overflow-x: hidden;
     padding-top: 0;
 
-    /* ADDED: scroll-padding-top for sticky header */
-    scroll-padding-top: var(--header-height-initial);
-    transition: scroll-padding-top var(--transition-speed-fast) ease-out; /* Animate padding if needed */
+    /* ADDED: scroll-padding-top for sticky header - Use Desktop Initial as base */
+    scroll-padding-top: var(--header-height-desktop-initial);
+    transition: scroll-padding-top var(--transition-speed-fast) ease-out;
 }
 
 /* Prevent scrolling when mobile menu is open */
@@ -99,11 +105,13 @@ header {
     left: 0;
     width: 100%;
     z-index: 100;
-    padding: clamp(0.8rem, 2vw, 1.2rem) 1.5rem;
+    /* UPDATED: Reduced vertical padding */
+    padding: clamp(0.6rem, 1.5vw, 1rem) 1.5rem;
     color: var(--txt-light);
     text-align: center;
     overflow: hidden;
-    min-height: var(--header-height-initial); /* Use variable */
+    /* Using desktop initial height variable */
+    min-height: var(--header-height-desktop-initial);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -177,10 +185,10 @@ header::after {
     animation: aurora-move-alt 30s infinite alternate ease-in-out;
 }
 
-
+/* UPDATED: Reduced logo height to fit in smaller header */
 .brand-wrap img {
     display: block;
-    height: clamp(75px, 15vw, 120px);
+    height: clamp(75px, 8vw, 100px); /* Adjusted max height and vw */
     width: auto;
     filter: drop-shadow(0 8px 15px rgba(0,0,0,0.4));
     transition: height var(--transition-speed-fast) ease-out,
@@ -190,7 +198,8 @@ header::after {
 }
 
 body.scrolled header {
-    min-height: var(--header-height-scrolled); /* Use variable */
+    /* Using desktop scrolled height variable */
+    min-height: var(--header-height-desktop-scrolled);
     padding: 0.4rem 1.5rem;
     background-position: 50% 50%;
     backdrop-filter: blur(24px) saturate(170%);
@@ -204,8 +213,9 @@ body.scrolled header {
     ) 1;
 }
 
+/* UPDATED: Reduced scrolled logo height */
 body.scrolled .brand-wrap img {
-    height: clamp(60px, 11vw, 85px);
+    height: clamp(60px, 6vw, 78px); /* Adjusted max height and vw */
     filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
 }
 
@@ -460,16 +470,12 @@ main {
     width: 100%;
     max-width: 1350px;
     padding: 0 1rem;
-    /* Adjusted margin-top to account for initial header height */
     /* Removed calc, rely on scroll-padding-top pushing content down */
     margin-top: 1.5rem;
     transition: margin-top var(--transition-speed-fast) ease-out;
 }
 
 /* Removed scrolled margin-top, rely on scroll-padding-top */
-/* body.scrolled main {
-    margin-top: calc(clamp(4.5rem, 12vw, 5.5rem) * 0.9);
-} */
 
 
 .grid {
@@ -754,52 +760,56 @@ footer {
 
     /* Adjust header layout for mobile */
     header {
-        flex-direction: row; /* Keep logo, toggle, maybe social inline if they were visible */
-        justify-content: space-between; /* Space out logo and toggle */
-        align-items: center; /* Vertically center */
-        padding: 0.5rem 1rem; /* Adjusted padding */
-        min-height: auto; /* Allow height to be determined by content */
-        height: clamp(4.5rem, 12vw, 5.5rem); /* Fixed or min height for mobile */
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding: 0.5rem 1rem; /* Adjusted padding for >600px */
+        /* REMOVED: min-height: auto; */
+        /* Using mobile initial height variable */
+        height: var(--header-height-mobile-initial);
     }
 
     body.scrolled header {
-         height: clamp(4rem, 10vw, 5rem); /* Slightly smaller when scrolled */
-         min-height: auto; /* Remove min-height constraint */
-         padding: 0.4rem 1rem; /* Adjust padding */
+         /* REMOVED: min-height: auto; */
+         /* Using mobile scrolled height variable */
+         height: var(--header-height-mobile-scrolled);
+         padding: 0.4rem 1rem; /* Adjust padding for >600px */
     }
 
      .brand-wrap img {
-        height: clamp(3.5rem, 9vw, 4.5rem); /* Adjust logo size on mobile */
+        /* Logo size on mobile - Increased min height again */
+        height: clamp(4.5rem, 10vw, 5rem); /* Kept mobile logo size */
      }
 
      body.scrolled .brand-wrap img {
-        height: clamp(3rem, 8vw, 4rem); /* Adjust scrolled logo size on mobile */
+        /* Scrolled logo size on mobile - Increased min height */
+        height: clamp(3.5rem, 9vw, 4.5rem); /* Kept mobile scrolled logo size */
      }
 
 
     /* Adjust main content margin for the new header height */
-    /* Removed calc, rely on scroll-padding-top */
+    /* Removed calc, rely on scroll-padding-top pushing content down */
      main {
          margin-top: 1.5rem;
      }
-    /* Removed scrolled margin-top */
-    /* body.scrolled main {
-         margin-top: calc(clamp(4rem, 10vw, 5rem) + 1.5rem);
-     } */
+    /* Removed scrolled margin-top, rely on scroll-padding-top */
 
-    /* ADDED: Update scroll-padding-top for mobile heights */
+
+    /* ADDED BACK: Update scroll-padding-top for mobile heights in the media query */
      body {
-         scroll-padding-top: clamp(4.5rem, 12vw, 5.5rem); /* Use mobile non-scrolled height */
+         /* Use mobile initial height variable */
+         scroll-padding-top: var(--header-height-mobile-initial);
      }
 
      body.scrolled {
-         scroll-padding-top: clamp(4rem, 10vw, 5rem); /* Use mobile scrolled height */
+         /* Use mobile scrolled height variable */
+         scroll-padding-top: var(--header-height-mobile-scrolled);
      }
 
 
     header::before, header::after {
         filter: blur(50px);
-        opacity: 0.3; /* Less opaque aurora on mobile */
+        opacity: 0.3;
         width: clamp(150px, 35vw, 250px);
         height: clamp(150px, 35vw, 250px);
     }
@@ -809,7 +819,7 @@ footer {
 
 /* Even smaller screen tweaks */
 @media (max-width: 600px) {
-     header { padding: 0.5rem 0.8rem; } /* Further reduced padding */
+     header { padding: 0.5rem 0.8rem; } /* Further reduced padding (This is the padding applied at 430px) */
      body.scrolled header { padding: 0.4rem 0.8rem; }
      header::before, header::after { filter: blur(40px); opacity: 0.2; }
      .menu-toggle { font-size: 1.6rem; padding: 0.3rem; }
@@ -817,24 +827,15 @@ footer {
      .mobile-nav-list a { font-size: 1.1rem; }
      .mobile-social-list a { font-size: 1.3rem; width: 40px; height: 40px; }
 
-    /* ADDED: Update scroll-padding-top for very small mobile heights */
+    /* ADDED BACK: Update scroll-padding-top for very small mobile heights (Keep aligned with 768px breakpoint definitions) */
      body {
-        scroll-padding-top: clamp(4.5rem, 12vw, 5.5rem); /* Still use 768px range for calculation */
+        /* Use mobile initial height variable */
+        scroll-padding-top: var(--header-height-mobile-initial);
      }
      body.scrolled {
-         scroll-padding-top: clamp(4rem, 10vw, 5rem); /* Still use 768px range for calculation */
+         /* Use mobile scrolled height variable */
+         scroll-padding-top: var(--header-height-mobile-scrolled);
      }
 }
 
-/*
-    Removed the old @media (max-width: 600px) header rules that made it a column,
-    as the new mobile menu structure handles navigation below 768px.
-    The 600px queries now just adjust padding and element sizes.
-*/
-
-@media (max-width: 420px) {
-    .brand-wrap img { height: clamp(3rem, 10vw, 4rem); }
-    body.scrolled .brand-wrap img { height: clamp(2.8rem, 9vw, 3.5rem); }
-     .menu-toggle { font-size: 1.5rem; }
-     .mobile-menu-panel { width: 95%; }
-}
+/* ... (Rest of CSS remains the same) ... */
