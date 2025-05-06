@@ -196,7 +196,7 @@
                   }
                   // Setup observer regardless of whether instgrm object is found immediately
                   setupCardObserver();
-              }, 100); // Small delay
+              }, 500); // Small delay
 
           } catch (error) {
               console.error('Error loading Instagram posts:', error);
@@ -280,12 +280,7 @@
           window.addEventListener('scroll', handleScroll, { passive: true });
 
           // Delay initial check to prevent premature header shrinking on iPhones
-          setTimeout(() => {
-              // Initial check only if page is actually scrolled significantly
-              if (window.scrollY > 100) {
-                  handleScroll();
-              }
-          }, 500); // Increased delay to 500ms for better iPhone compatibility
+           // Increased delay to 500ms for better iPhone compatibility
 
           // --- Add Mobile Menu Listeners (ADD THESE) ---
            if (menuToggle && mobileMenuOverlay && menuClose) {
