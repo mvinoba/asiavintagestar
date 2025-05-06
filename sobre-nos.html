@@ -52,19 +52,19 @@
       </button>
     </header>
 
-    <!-- ===== MAIN CONTENT (REESCRITO) ===== -->
+    <!-- ===== MAIN CONTENT (REESCRITO - FOCO AMPLO) ===== -->
     <main>
       <h1>Sobre Nós</h1>
-      <p>Bem-vindo(a) ao universo da <strong>Asia Vintage Star</strong>! ✨ Aqui, a paixão pela cultura pop asiática, com um brilho especial na Onda Coreana (Hallyu), pulsa mais forte. Somos um espaço feito <em>de fãs para fãs</em>, dedicados a celebrar tudo sobre K-dramas e K-idols que amamos.</p>
-      <p>Nascemos do desejo de criar uma comunidade vibrante e um ponto de encontro para todos que compartilham desse fascínio. Seja você um fã de longa data ou alguém que acabou de descobrir esse mundo incrível, aqui você encontrará:</p>
+      <p>Olá e bem-vindo(a) à <strong>Asia Vintage Star</strong>! ✨ Somos um espaço dedicado a explorar e celebrar a vasta e fascinante diversidade das culturas asiáticas.</p>
+      <p>Sabemos que a paixão pelo entretenimento asiático – seja música, cinema, animes ou dramas – é uma porta de entrada maravilhosa para muitos. Por isso, aqui você encontrará tanto as últimas novidades do mundo pop quanto mergulhos profundos em aspectos culturais diversos. Queremos ser um ponto de encontro para todos os entusiastas, oferecendo:</p>
       <ul>
-          <li>📰 <strong>Notícias e Novidades:</strong> Fique por dentro dos últimos lançamentos, comebacks e acontecimentos.</li>
-          <li>🎬 <strong>Matérias Especiais:</strong> Análises de dramas, perfis de artistas, curiosidades e muito mais.</li>
-          <li>🎤 <strong>Entrevistas:</strong> Conversas exclusivas que aproximam você dos seus ídolos e da cultura.</li>
-          <li>🗓️ <strong>Cobertura de Eventos:</strong> Informações sobre shows, fan meetings e eventos relacionados no Brasil e no mundo.</li>
+          <li>🎬 <strong>Universo Pop:</strong> Notícias, análises e tendências do entretenimento asiático que conquistou o mundo.</li>
+          <li>📰 <strong>Matérias Culturais:</strong> Artigos sobre história, sociedade, costumes, gastronomia e viagens pela Ásia.</li>
+          <li>🎤 <strong>Entrevistas:</strong> Conversas com personalidades, artistas e especialistas que compartilham suas visões e experiências.</li>
+          <li>🗓️ <strong>Eventos e Comunidade:</strong> Divulgação de eventos culturais, encontros e formas de conectar nossa comunidade de fãs.</li>
       </ul>
-      <p>A Asia Vintage Star é mais do que um site: é uma plataforma para conectar pessoas, compartilhar informações e celebrar juntos a riqueza e a diversidade da cultura asiática. Navegue pelas nossas seções, participe nas redes sociais e considere <a href="seja-voluntario.html">juntar-se à nossa equipe</a>!</p>
-      <p>Explore, descubra e faça parte da nossa constelação!</p>
+      <p>A Asia Vintage Star é feita por e para apaixonados pela Ásia. Acreditamos no poder da informação e da troca para aproximar culturas e pessoas. Explore nosso conteúdo, conecte-se conosco nas redes sociais e, se sentir o chamado, considere <a href="seja-voluntario.html">fazer parte da nossa equipe de voluntários</a>!</p>
+      <p>Descubra, aprenda e celebre a riqueza da Ásia conosco!</p>
     </main>
 
     <!-- ===== FOOTER ===== -->
@@ -150,7 +150,6 @@
            listItems.forEach(item => {
                // Example: Add specific styles or icons if needed via JS,
                // but it's better handled with CSS like below.
-               // For now, just ensure basic list styling applies.
            });
       });
     </script>
@@ -185,11 +184,12 @@
             text-align: center;
         }
 
-        /* Assign specific icons */
-        main:has(ul) li:nth-of-type(1)::before { content: '\f0f0'; } /* fa-newspaper */
-        main:has(ul) li:nth-of-type(2)::before { content: '\f005'; } /* fa-star or fa-film \f008 */
-        main:has(ul) li:nth-of-type(3)::before { content: '\f130'; } /* fa-microphone */
-        main:has(ul) li:nth-of-type(4)::before { content: '\f073'; } /* fa-calendar-days */
+        /* Assign specific icons - UPDATED to reflect broader categories */
+        /* You can choose icons that better represent the broader scope if you like */
+        main:has(ul) li:nth-of-type(1)::before { content: '\f7a4'; } /* fa-landmark - Represents culture/history */
+        main:has(ul) li:nth-of-type(2)::before { content: '\f005'; } /* fa-star - Represents pop culture/entertainment */
+        main:has(ul) li:nth-of-type(3)::before { content: '\f130'; } /* fa-microphone - Represents interviews/voices */
+        main:has(ul) li:nth-of-type(4)::before { content: '\f073'; } /* fa-calendar-days - Represents events/community */
 
         /* Style for the link inside the paragraph */
          main p a[href="seja-voluntario.html"] {
@@ -204,4 +204,4 @@
 
     </style>
 </body>
-</html>
+</html> 
