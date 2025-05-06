@@ -110,11 +110,10 @@
       // --- Global Variables & Elements ---
       const grid = document.querySelector('.grid');
       // IMPORTANT: Ensure this URL points to your published CSV sheet
-      // The URL remains the same if you just added a column to the existing sheet/tab
       const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSwOoUC1FaaexqrEA6CtMnE46b4_5m28gSZUia3sm2mUUZA1EHxF-qHBwMSTFw0aR7o7N9rppNjmFLG/pub?gid=0&single=true&output=csv';
       let intersectionObserver; // Declare observer globally to manage it
 
-      // --- Global Variables & Elements (ADD THESE) ---
+       // --- Global Variables & Elements (ADD THESE) ---
       const menuToggle = document.querySelector('.menu-toggle');
       const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
       const menuClose = document.querySelector('.menu-close');
@@ -132,10 +131,41 @@
            menuToggle.setAttribute('aria-expanded', 'false');
       }
 
+      // --- Basic CSV line parsing function to handle quoted fields ---
+      // This is a simplified parser, assumes no newlines within quotes or complex escaping
+      function parseCsvLine(line, delimiter = ',') {
+          const result = [];
+          let currentField = '';
+          let inQuotes = false;
 
+          for (let i = 0; i < line.length; i++) {
+              const char = line[i];
+              const nextChar = line[i + 1];
+
+              if (char === '"') {
+                  if (inQuotes && nextChar === '"') { // Handle escaped double quote ("")
+                      currentField += '"';
+                      i++; // Skip the next quote
+                  } else {
+                      inQuotes = !inQuotes; // Toggle inQuotes state
+                  }
+              } else if (char === delimiter && !inQuotes) { // Found delimiter outside quotes
+                  result.push(currentField);
+                  currentField = ''; // Reset for the next field
+              } else { // Normal character or delimiter inside quotes
+                  currentField += char;
+              }
+          }
+
+          result.push(currentField); // Add the last field
+
+          return result;
+      }
       // --- Function to Load Posts from Google Sheet ---
       async function loadInstagramPosts() {
-          // grid.innerHTML = '<p>Loading posts...</p>'; // Keep initial message
+          // Determine the type of the current page
+          const currentPageType = 'eventos'; // Hardcoded for eventos.html
+
           try {
               const response = await fetch(sheetUrl);
               if (!response.ok) {
@@ -144,18 +174,34 @@
               const csvData = await response.text();
               const rows = csvData.split(/\r?\n/).slice(1); // Skip header row
               rows.reverse(); // Display newest first
-              grid.innerHTML = ''; // Clear loading message
+              grid.innerHTML = ''; // Clear loading message or previous content
 
               let postsFound = false;
               rows.forEach(row => {
-                  const columns = row.split(',');
+                  const columns = parseCsvLine(row);
+
                   const postUrl = columns[0] ? columns[0].trim() : null;
                   const isActive = columns[1] && columns[1].trim().toUpperCase() === 'SIM';
-                  // Get the post type from the new column (index 2 for column C)
-                  const postType = columns[2] ? columns[2].trim().toLowerCase() : ''; // Handle empty/missing column
+                  // Get the page types string from Column C (index 2)
+                  // Remove surrounding quotes potentially added by CSV export
+                  const pageTypesStringRaw = columns[2] ? columns[2].trim() : '';
+                  // Remove outer quotes if they exist (e.g., "Home, Eventos" -> Home, Eventos)
+                  let pageTypesString = pageTypesStringRaw.replace(/^"(.*)"$/, '$1');
+                  // Also handle potential internal escaped quotes if necessary (less common from Google Sheets)
+                  pageTypesString = pageTypesString.replace(/""/g, '"');
 
-                  // *** Filter for 'evento' type posts ***
-                  if (isActive && postUrl && postUrl.startsWith('https://www.instagram.com/') && postType === 'eventos') {
+                  // Parse the comma-separated page types into an array
+                  // Handles cases like "Home, Eventos" or "Home"
+                  const pageTypesArray = pageTypesString
+                      .split(',')
+                      .map(type => type.trim().toLowerCase()) // Trim whitespace and convert to lowercase
+                      .filter(type => type !== ''); // Remove any empty strings resulting from splits
+
+
+                  // *** Filtering Logic: Show if Active AND the current page is in the page types array ***
+                  if (isActive && postUrl && postUrl.startsWith('https://www.instagram.com/') &&
+                      pageTypesArray.includes(currentPageType)) {
+
                       postsFound = true;
                       const card = document.createElement('div');
                       card.className = 'card';
@@ -181,7 +227,8 @@
               });
 
               if (!postsFound && grid.innerHTML === '') {
-                   grid.innerHTML = '<p>Nenhum evento para mostrar no momento.</p>'; // Changed Empty Text
+                   // Changed Empty Text
+                   grid.innerHTML = '<p>Nenhum evento para mostrar no momento.</p>';
               } else if (grid.innerHTML === '') {
                   // This case handles if postsFound is true but no cards were actually appended
                   // (shouldn't happen with the current logic but good safety)
@@ -200,7 +247,8 @@
 
           } catch (error) {
               console.error('Error loading Instagram posts:', error);
-              grid.innerHTML = '<p>Não foi possível carregar os eventos. Verifique sua conexão ou tente novamente mais tarde.</p>'; // Changed Error Text
+              // Changed Error Text
+              grid.innerHTML = '<p>Não foi possível carregar os eventos. Verifique sua conexão ou tente novamente mais tarde.</p>';
           }
       }
 
