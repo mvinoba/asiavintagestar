@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Asia Vintage Star</title>
+    <title>Eventos - Asia Vintage Star</title>
     <link rel="icon" type="image/png" href="/favicon-96x96.png" sizes="96x96" />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <link rel="shortcut icon" href="/favicon.ico" />
@@ -32,10 +32,15 @@
       <!-- Added main-nav class for consistency -->
       <nav class="main-nav">
         <a href="materias.html">matérias</a>
+        <span>•</span>
         <a href="eventos.html">eventos</a>
+        <span>•</span>
         <a href="entrevistas.html">entrevistas</a>
+        <span>•</span>
         <a href="sobre-nos.html">sobre nós</a>
+        <span>•</span>
         <a href="contato.html">contato</a>
+        <span>•</span>
         <a href="seja-voluntario.html">seja voluntário</a>
       </nav>
       <div class="social-links">
@@ -49,12 +54,30 @@
           <i class="fa-brands fa-tiktok" title="TikTok"></i>
         </a>
       </div>
-      <!-- Mobile Menu Toggle Button (Already exists, ADD ARIA ATTRIBUTES) -->
+       <!-- Mobile Menu Toggle Button (ADDED) -->
       <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-haspopup="true">
           <i class="fas fa-bars"></i>
       </button>
     </header>
-    <!-- ===== Mobile Menu Overlay & Panel (Already exists) ===== -->
+
+    <!-- ===== GRID ===== -->
+    <main>
+        <div class="grid">
+            <p>Carregando matérias...</p>
+            <!-- Posts will be loaded here -->
+        </div>
+    </main>
+
+    <!-- ===== FOOTER ===== -->
+    <footer>
+      © <span id="year"></span> Asia Vintage Star — Todos os direitos
+      reservados.
+    </footer>
+
+    <!-- Instagram embed loader -->
+    <script async src="//www.instagram.com/embed.js"></script>
+
+     <!-- ===== Mobile Menu Overlay & Panel (ADDED) ===== -->
     <div class="mobile-menu-overlay">
       <div class="mobile-menu-panel">
           <button class="menu-close" aria-label="Fechar menu de navegação">
@@ -66,8 +89,8 @@
               <a href="eventos.html">eventos</a>
               <a href="entrevistas.html">entrevistas</a>
               <a href="sobre-nos.html">sobre nós</a>
-              <a href="contato.html">contato</a>
               <a href="seja-voluntario.html">seja voluntário</a>
+              <a href="contato.html">contato</a>
           </nav>
            <div class="mobile-social-list">
               <!-- Social links will be copied here -->
@@ -83,24 +106,9 @@
             </div>
       </div>
   </div>
-    <!-- ===== GRID ===== -->
-    <main>
-      <div class="grid">
-        <p>Carregando posts...</p>
-        <!-- Posts will be loaded here -->
-      </div>
-    </main>
 
-    <!-- ===== FOOTER ===== -->
-    <footer>
-      © <span id="year"></span> Asia Vintage Star — Todos os direitos
-      reservados.
-    </footer>
 
-    <!-- Instagram embed loader -->
-    <script async src="//www.instagram.com/embed.js"></script>
-
-    <!-- SINGLE SCRIPT BLOCK FOR ALL LOGIC (No changes needed here for header style) -->
+    <!-- SINGLE SCRIPT BLOCK FOR ALL LOGIC -->
     <script>
       // --- Global Variables & Elements ---
       const grid = document.querySelector('.grid');
@@ -156,11 +164,10 @@
 
           return result;
       }
-
       // --- Function to Load Posts from Google Sheet ---
       async function loadInstagramPosts() {
           // Determine the type of the current page
-          const currentPageType = 'home'; // Hardcoded for index.html
+          const currentPageType = 'matérias'; // Hardcoded for materias.html
 
           try {
               const response = await fetch(sheetUrl);
@@ -217,18 +224,18 @@
                       blockquote.style.boxShadow = 'none';
                       blockquote.innerHTML = ' '; // Placeholder content for embed script
 
-
                       card.appendChild(blockquote);
                       grid.appendChild(card);
                   }
               });
 
               if (!postsFound && grid.innerHTML === '') {
-                   // Updated empty message for index page
-                   grid.innerHTML = '<p>Nenhum post para mostrar no momento.</p>';
+                   // Changed Empty Text
+                   grid.innerHTML = '<p>Nenhum evento para mostrar no momento.</p>';
               } else if (grid.innerHTML === '') {
-                   // Safety check - should be covered by !postsFound, but harmless
-                   grid.innerHTML = '<p>Nenhum post para mostrar no momento.</p>';
+                  // This case handles if postsFound is true but no cards were actually appended
+                  // (shouldn't happen with the current logic but good safety)
+                  grid.innerHTML = '<p>Nenhum evento para mostrar no momento.</p>';
               }
 
 
@@ -243,8 +250,8 @@
 
           } catch (error) {
               console.error('Error loading Instagram posts:', error);
-              // Updated error message for index page
-              grid.innerHTML = '<p>Não foi possível carregar os posts. Verifique sua conexão ou tente novamente mais tarde.</p>';
+              // Changed Error Text
+              grid.innerHTML = '<p>Não foi possível carregar os eventos. Verifique sua conexão ou tente novamente mais tarde.</p>';
           }
       }
 
@@ -326,7 +333,7 @@
           // Delay initial check to prevent premature header shrinking on iPhones
            // Increased delay to 500ms for better iPhone compatibility
 
-           // --- Add Mobile Menu Listeners (ADD THESE) ---
+          // --- Add Mobile Menu Listeners (ADD THESE) ---
            if (menuToggle && mobileMenuOverlay && menuClose) {
                menuToggle.addEventListener('click', openMenu);
                menuClose.addEventListener('click', closeMenu);
@@ -340,8 +347,7 @@
                 });
            }
            // --- END Add Mobile Menu Listeners ---
-
       });
     </script>
   </body>
-</html>
+</html> 
