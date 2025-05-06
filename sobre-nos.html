@@ -29,15 +29,10 @@
        <!-- Added main-nav class for consistency -->
       <nav class="main-nav">
         <a href="materias.html">matérias</a>
-        <span>•</span>
         <a href="eventos.html">eventos</a>
-        <span>•</span>
         <a href="entrevistas.html">entrevistas</a>
-        <span>•</span>
         <a href="sobre-nos.html">sobre nós</a>
-        <span>•</span>
         <a href="contato.html">contato</a>
-        <span>•</span>
         <a href="seja-voluntario.html">seja voluntário</a>
       </nav>
       <div class="social-links">
@@ -57,11 +52,19 @@
       </button>
     </header>
 
-    <!-- ===== MAIN CONTENT ===== -->
+    <!-- ===== MAIN CONTENT (REESCRITO) ===== -->
     <main>
       <h1>Sobre Nós</h1>
-      <p>Bem-vindo à <strong>Asia Vintage Star</strong>! Somos a sua fonte principal para as últimas novidades, fofocas, e tendências do mundo vibrante dos K-dramas e K-idols. A nossa paixão é trazer conteúdo atualizado e envolvente para todos os fãs da cultura pop coreana.</p>
-      <p>Desde notícias sobre os seus grupos favoritos e atores promissores, até análises de dramas que não pode perder e cobertura de eventos, esforçamo-nos por ser o seu ponto de encontro para tudo o que é Hallyu. Junte-se à nossa comunidade!</p>
+      <p>Bem-vindo(a) ao universo da <strong>Asia Vintage Star</strong>! ✨ Aqui, a paixão pela cultura pop asiática, com um brilho especial na Onda Coreana (Hallyu), pulsa mais forte. Somos um espaço feito <em>de fãs para fãs</em>, dedicados a celebrar tudo sobre K-dramas e K-idols que amamos.</p>
+      <p>Nascemos do desejo de criar uma comunidade vibrante e um ponto de encontro para todos que compartilham desse fascínio. Seja você um fã de longa data ou alguém que acabou de descobrir esse mundo incrível, aqui você encontrará:</p>
+      <ul>
+          <li>📰 <strong>Notícias e Novidades:</strong> Fique por dentro dos últimos lançamentos, comebacks e acontecimentos.</li>
+          <li>🎬 <strong>Matérias Especiais:</strong> Análises de dramas, perfis de artistas, curiosidades e muito mais.</li>
+          <li>🎤 <strong>Entrevistas:</strong> Conversas exclusivas que aproximam você dos seus ídolos e da cultura.</li>
+          <li>🗓️ <strong>Cobertura de Eventos:</strong> Informações sobre shows, fan meetings e eventos relacionados no Brasil e no mundo.</li>
+      </ul>
+      <p>A Asia Vintage Star é mais do que um site: é uma plataforma para conectar pessoas, compartilhar informações e celebrar juntos a riqueza e a diversidade da cultura asiática. Navegue pelas nossas seções, participe nas redes sociais e considere <a href="seja-voluntario.html">juntar-se à nossa equipe</a>!</p>
+      <p>Explore, descubra e faça parte da nossa constelação!</p>
     </main>
 
     <!-- ===== FOOTER ===== -->
@@ -81,8 +84,8 @@
               <a href="eventos.html">eventos</a>
               <a href="entrevistas.html">entrevistas</a>
               <a href="sobre-nos.html">sobre nós</a>
-              <a href="seja-voluntario.html">seja voluntário</a>
               <a href="contato.html">contato</a>
+              <a href="seja-voluntario.html">seja voluntário</a>
           </nav>
            <div class="mobile-social-list">
               <!-- Social links will be copied here -->
@@ -129,6 +132,7 @@
                menuToggle.addEventListener('click', openMenu);
                menuClose.addEventListener('click', closeMenu);
                mobileMenuOverlay.addEventListener('click', (e) => {
+                   // Close if clicking on the overlay itself, not the panel content
                    if (e.target === mobileMenuOverlay) {
                        closeMenu();
                    }
@@ -141,7 +145,63 @@
 
 
           // Scroll handling logic removed from this page
+           // Add list item styles specific to this page if needed
+           const listItems = document.querySelectorAll('main ul li');
+           listItems.forEach(item => {
+               // Example: Add specific styles or icons if needed via JS,
+               // but it's better handled with CSS like below.
+               // For now, just ensure basic list styling applies.
+           });
       });
     </script>
+
+    <!-- ADDED: Simple inline style for the list on this page -->
+    <style>
+        main:has(ul) ul {
+            list-style: none;
+            padding-left: 0; /* Remove default padding */
+            margin-top: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+
+        main:has(ul) li {
+            position: relative;
+            padding-left: 1.8em; /* Space for the icon/bullet */
+            margin-bottom: 0.9rem;
+            line-height: 1.6;
+            font-size: 1.05rem;
+        }
+
+        main:has(ul) li::before {
+            content: ''; /* Placeholder for icon */
+            position: absolute;
+            left: 0;
+            top: 0.2em; /* Adjust vertical alignment */
+            font-family: "Font Awesome 6 Free"; /* Specify Font Awesome */
+            font-weight: 900; /* Use solid style */
+            font-size: 1em; /* Adjust icon size */
+            color: var(--brand-vibrant-pink); /* Use brand color */
+            width: 1.2em; /* Ensure space is reserved */
+            text-align: center;
+        }
+
+        /* Assign specific icons */
+        main:has(ul) li:nth-of-type(1)::before { content: '\f0f0'; } /* fa-newspaper */
+        main:has(ul) li:nth-of-type(2)::before { content: '\f005'; } /* fa-star or fa-film \f008 */
+        main:has(ul) li:nth-of-type(3)::before { content: '\f130'; } /* fa-microphone */
+        main:has(ul) li:nth-of-type(4)::before { content: '\f073'; } /* fa-calendar-days */
+
+        /* Style for the link inside the paragraph */
+         main p a[href="seja-voluntario.html"] {
+            color: var(--brand-magenta);
+            text-decoration: underline;
+            font-weight: 600;
+         }
+         main p a[href="seja-voluntario.html"]:hover {
+             filter: brightness(1.15);
+             text-decoration: none;
+         }
+
+    </style>
 </body>
 </html>
