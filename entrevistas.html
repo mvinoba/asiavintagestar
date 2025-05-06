@@ -25,11 +25,13 @@
     <header>
       <!-- Aurora bubbles are added via ::before and ::after pseudo-elements -->
       <div class="brand-wrap">
+        <!-- FIXED: Logo link should be root -->
         <a href="/">
           <img src="logo3.2.png" alt="Logo Asia Vintage Star" />
         </a>
       </div>
-      <nav>
+      <!-- Added main-nav class for consistency -->
+      <nav class="main-nav">
         <a href="eventos.html">eventos</a>
         <span>•</span>
         <a href="entrevistas.html">entrevistas</a>
@@ -51,6 +53,10 @@
           <i class="fa-brands fa-tiktok" title="TikTok"></i>
         </a>
       </div>
+       <!-- Mobile Menu Toggle Button (ADDED) -->
+      <button class="menu-toggle" aria-label="Abrir menu de navegação" aria-expanded="false" aria-haspopup="true">
+          <i class="fas fa-bars"></i>
+      </button>
     </header>
 
     <!-- ===== GRID ===== -->
@@ -70,6 +76,36 @@
     <!-- Instagram embed loader -->
     <script async src="//www.instagram.com/embed.js"></script>
 
+     <!-- ===== Mobile Menu Overlay & Panel (ADDED) ===== -->
+    <div class="mobile-menu-overlay">
+      <div class="mobile-menu-panel">
+          <button class="menu-close" aria-label="Fechar menu de navegação">
+              <i class="fas fa-xmark"></i>
+          </button>
+          <nav class="mobile-nav-list">
+              <!-- Links will be copied here -->
+              <a href="eventos.html">eventos</a>
+              <a href="entrevistas.html">entrevistas</a>
+              <a href="sobre-nos.html">sobre nós</a>
+              <a href="seja-voluntario.html">seja voluntário</a>
+              <a href="contato.html">contato</a>
+          </nav>
+           <div class="mobile-social-list">
+              <!-- Social links will be copied here -->
+              <a href="https://www.instagram.com/asiavintagestar" target="_blank" rel="noopener noreferrer" aria-label="Instagram">
+                <i class="fa-brands fa-instagram" title="Instagram"></i>
+              </a>
+              <a href="https://www.facebook.com/asiavintagestar" target="_blank" rel="noopener noreferrer" aria-label="Facebook">
+                <i class="fa-brands fa-facebook-f" title="Facebook"></i>
+              </a>
+              <a href="https://www.tiktok.com/@asiavintagestar" target="_blank" rel="noopener noreferrer" aria-label="TikTok">
+                <i class="fa-brands fa-tiktok" title="TikTok"></i>
+              </a>
+            </div>
+      </div>
+  </div>
+
+
     <!-- SINGLE SCRIPT BLOCK FOR ALL LOGIC -->
     <script>
       // --- Global Variables & Elements ---
@@ -77,6 +113,24 @@
       // IMPORTANT: Ensure this URL points to your published CSV sheet
       const sheetUrl = 'https://docs.google.com/spreadsheets/d/e/2PACX-1vSwOoUC1FaaexqrEA6CtMnE46b4_5m28gSZUia3sm2mUUZA1EHxF-qHBwMSTFw0aR7o7N9rppNjmFLG/pub?gid=0&single=true&output=csv';
       let intersectionObserver; // Declare observer globally to manage it
+
+       // --- Global Variables & Elements (ADD THESE) ---
+      const menuToggle = document.querySelector('.menu-toggle');
+      const mobileMenuOverlay = document.querySelector('.mobile-menu-overlay');
+      const menuClose = document.querySelector('.menu-close');
+      const mobileNavLinks = document.querySelectorAll('.mobile-nav-list a');
+
+
+      // --- Functions to Open and Close Menu (ADD THESE) ---
+      function openMenu() {
+          document.body.classList.add('menu-open');
+          menuToggle.setAttribute('aria-expanded', 'true');
+      }
+
+      function closeMenu() {
+          document.body.classList.remove('menu-open');
+           menuToggle.setAttribute('aria-expanded', 'false');
+      }
 
       // --- Function to Load Posts from Google Sheet ---
       async function loadInstagramPosts() {
@@ -230,6 +284,22 @@
                   handleScroll();
               }
           }, 500); // Increased delay to 500ms for better iPhone compatibility
+
+           // --- Add Mobile Menu Listeners (ADD THESE) ---
+           if (menuToggle && mobileMenuOverlay && menuClose) {
+               menuToggle.addEventListener('click', openMenu);
+               menuClose.addEventListener('click', closeMenu);
+               mobileMenuOverlay.addEventListener('click', (e) => {
+                   if (e.target === mobileMenuOverlay) {
+                       closeMenu();
+                   }
+               });
+                mobileNavLinks.forEach(link => {
+                     link.addEventListener('click', closeMenu);
+                });
+           }
+           // --- END Add Mobile Menu Listeners ---
+
       });
     </script>
   </body>

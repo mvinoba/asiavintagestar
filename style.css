@@ -63,6 +63,12 @@ body {
     padding-top: 0;
 }
 
+/* Prevent scrolling when mobile menu is open */
+body.menu-open {
+    overflow: hidden;
+}
+
+
 /* ====== HERO / HEADER ====== */
 
 @keyframes gradient-flow {
@@ -198,13 +204,15 @@ body.scrolled .brand-wrap img {
     filter: drop-shadow(0 6px 10px rgba(0,0,0,0.35));
 }
 
-/* ====== Header Navigation ====== */
+/* ====== Header Navigation (Desktop) ====== */
 header nav {
 	display: flex;
 	align-items: center;
 	gap: clamp(1rem, 3vw, 1.8rem);
 	z-index: 10;
     margin: 0 auto;
+    /* Keep flex for desktop */
+    display: flex;
 }
 
 header nav a {
@@ -220,6 +228,7 @@ header nav a {
 }
 
 header nav a:not(:first-child)::before {
+    content: '•'; /* Add bullet back with CSS */
     display: inline-block;
     margin-right: 0.75em;
     opacity: 0.6;
@@ -228,7 +237,9 @@ header nav a:not(:first-child)::before {
     vertical-align: middle;
     position: relative;
     top: -0.05em;
+    color: inherit; /* Inherit color from link */
 }
+
 
 header nav a:hover,
 header nav a:focus-visible {
@@ -236,7 +247,7 @@ header nav a:focus-visible {
 	transform: translateY(-2px);
 }
 
-/* ====== Social Links ====== */
+/* ====== Social Links (Desktop) ====== */
 .social-links {
     position: absolute;
     top: 50%;
@@ -247,7 +258,15 @@ header nav a:focus-visible {
     gap: 0.8rem;
     z-index: 10;
     flex-shrink: 0;
+     /* Keep flex for desktop */
+    display: flex;
 }
+
+/* This rule hides the header social links only on the contact page (where they are in main) */
+body:has(main > .contact-links) header .social-links {
+    display: none;
+}
+
 
 .social-links a {
     color: var(--txt-light);
@@ -280,19 +299,172 @@ header nav a:focus-visible {
     outline: none;
 }
 
+/* ====== Mobile Menu Toggle ====== */
+.menu-toggle {
+    display: none; /* Hide by default on desktop */
+    background: none;
+    border: none;
+    color: var(--txt-light);
+    font-size: 1.8rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin-left: 1rem;
+    z-index: 10; /* Ensure it's above aurora */
+    transition: color var(--transition-speed-fast) ease;
+    will-change: color;
+}
+
+.menu-toggle:hover,
+.menu-toggle:focus-visible {
+    color: var(--brand-vibrant-pink);
+    outline: none;
+}
+
+
+/* ====== Mobile Menu Overlay and Panel ====== */
+.mobile-menu-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(var(--brand-dark-purple-rgb), 0.85); /* Semi-transparent dark overlay */
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    z-index: 150; /* Above header */
+    visibility: hidden; /* Hide by default */
+    opacity: 0; /* Fade in/out */
+    transition: opacity var(--transition-speed) ease-out, visibility var(--transition-speed) step-end;
+}
+
+body.menu-open .mobile-menu-overlay {
+    visibility: visible;
+    opacity: 1;
+    transition: opacity var(--transition-speed) ease-in, visibility var(--transition-speed) step-start;
+}
+
+.mobile-menu-panel {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 80%; /* Adjust width as needed */
+    max-width: 300px; /* Max width for larger screens */
+    height: 100%;
+    background: linear-gradient(180deg, var(--brand-magenta), var(--brand-dark-purple));
+    color: var(--txt-light);
+    z-index: 160;
+    padding: 2rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%); /* Slide out to the right */
+    transition: transform var(--transition-speed) ease-out;
+    box-shadow: -5px 0 20px rgba(var(--brand-near-black-rgb), 0.5);
+    overflow-y: auto; /* Allow scrolling if menu content is long */
+    -webkit-overflow-scrolling: touch; /* Smooth scrolling on iOS */
+}
+
+body.menu-open .mobile-menu-panel {
+    transform: translateX(0); /* Slide in */
+}
+
+.menu-close {
+    background: none;
+    border: none;
+    color: var(--txt-light);
+    font-size: 1.8rem;
+    cursor: pointer;
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    padding: 0.5rem;
+    transition: color var(--transition-speed-fast) ease;
+    will-change: color;
+}
+
+.menu-close:hover,
+.menu-close:focus-visible {
+    color: var(--brand-vibrant-pink);
+    outline: none;
+}
+
+.mobile-nav-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    margin-top: 3rem; /* Space below close button */
+    margin-bottom: 2rem;
+}
+
+.mobile-nav-list a {
+    color: var(--txt-light);
+    text-decoration: none;
+    font-size: 1.2rem;
+    font-weight: 600;
+    opacity: 0.9;
+    transition: opacity var(--transition-speed-fast) ease-out, transform var(--transition-speed-fast) ease-out;
+    text-transform: lowercase;
+    display: block; /* Make link block level for better click area */
+    padding: 0.5rem 0; /* Add padding for larger click area */
+}
+
+.mobile-nav-list a:hover,
+.mobile-nav-list a:focus-visible {
+    opacity: 1;
+    transform: translateX(5px);
+    color: var(--brand-vibrant-pink);
+    outline: none;
+}
+
+.mobile-social-list {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: auto; /* Push social links to the bottom */
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.mobile-social-list a {
+    color: var(--txt-light);
+    text-decoration: none;
+    font-size: 1.4rem; /* Slightly larger icons in menu */
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background-color: rgba(255,255,255,0.1);
+    border: 1px solid rgba(255,255,255,0.15);
+    transition: all var(--transition-speed-fast) ease-out;
+}
+
+.mobile-social-list a:hover,
+.mobile-social-list a:focus-visible {
+    color: var(--brand-vibrant-pink);
+    background-color: rgba(var(--brand-vibrant-pink-rgb), 0.15);
+    border-color: rgba(var(--brand-vibrant-pink-rgb), 0.5);
+    transform: translateY(-3px) scale(1.05);
+    outline: none;
+}
+
+
 /* ====== GRID WRAPPER (INDEX PAGE) ====== */
 main {
     margin: 0 auto;
     width: 100%;
     max-width: 1350px;
     padding: 0 1rem;
-    margin-top: calc(var(--header-height-initial) - 10rem);
+    /* Adjusted margin-top to account for initial header height */
+    margin-top: calc(var(--header-height-initial) * 0.8); /* Start main content slightly below header */
     transition: margin-top var(--transition-speed-fast) ease-out;
 }
 
 body.scrolled main {
-    margin-top: calc(clamp(4.5rem, 12vw, 5.5rem) + 0.2rem);
+    /* Adjusted margin-top when scrolled */
+    margin-top: calc(clamp(4.5rem, 12vw, 5.5rem) * 0.9); /* Adjust based on smaller header height */
 }
+
 
 .grid {
     display: grid;
@@ -431,7 +603,7 @@ main:has(.cta-button) li {
     font-size: 1.05rem;
 }
 
-/* FIX 2: Replace Font Awesome icon with UTF-8 bullet */
+/* Replace Font Awesome icon with UTF-8 bullet */
 main:has(.cta-button) li::before {
     content: '•'; /* UTF-8 Bullet point character */
     position: absolute;
@@ -443,7 +615,7 @@ main:has(.cta-button) li::before {
     /* Removed Font Awesome specific properties */
 }
 
-/* FIX 1: Ensure button text color is visible */
+/* Ensure button text color is visible */
 main .cta-button {
     cursor: pointer;
     display: inline-block;
@@ -527,6 +699,8 @@ main:has(.contact-links) {
     color: var(--brand-magenta);
 }
 
+/* This rule hides the header social links only on the contact page (where they are in main) */
+/* Keep this rule, it correctly hides the header social links on contact page */
 body:has(main > .contact-links) header .social-links {
     display: none;
 }
@@ -546,50 +720,97 @@ footer {
     border-top: 1px solid rgba(var(--brand-vibrant-pink-rgb), 0.15);
 }
 
-/* ====== RESPONSIVE TWEAKS ====== */
+/* ====== RESPONSIVE TWEAKS (FOR MOBILE MENU) ====== */
+/* Hide desktop nav and header social links, show mobile toggle below 768px */
 @media (max-width: 768px) {
-    .social-links { gap: 0.6rem; }
-    .social-links a { width: 38px; height: 38px; font-size: 1.15rem; }
-    header::before, header::after { filter: blur(50px); }
-    header::before { width: clamp(150px, 35vw, 250px); height: clamp(150px, 35vw, 250px); }
-    header::after { width: clamp(200px, 45vw, 300px); height: clamp(200px, 45vw, 300px); }
-    header nav { gap: 0.8rem; }
-    .contact-links { gap: 1rem; }
-    .contact-links a { width: 50px; height: 50px; font-size: 1.3rem; }
-    header { padding: 0.5rem 1rem; }
-}
-
-@media (max-width: 600px) {
-    .grid { grid-template-columns: 1fr; gap: 1.5rem;}
-    header {
-        flex-direction: column;
-        justify-content: center;
-        min-height: var(--header-height-initial);
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
+    header nav {
+        display: none; /* Hide desktop nav */
     }
-    .brand-wrap { margin-bottom: 0.5rem; order: 1; }
-    header nav { order: 2; margin: 0.5rem auto; }
-    .social-links { position: static; transform: none; order: 3; margin: 0.5rem auto 0; }
-    body:has(main > .contact-links) header .social-links { display: none; }
+
+    /* Only hide header social links IF they are in the header */
+    /* On contact page, they are in main, so this rule won't apply */
+    header .social-links {
+         display: none; /* Hide desktop header social links */
+         position: static; /* Remove absolute positioning */
+         transform: none; /* Remove transform */
+    }
+
+    /* Explicitly hide the desktop social links on the contact page header as well below 768px */
+    /* This ensures consistency even if the base social-links rule wasn't enough */
+    body:has(main > .contact-links) header .social-links {
+        display: none;
+    }
+
+
+    .menu-toggle {
+        display: block; /* Show hamburger button */
+    }
+
+    /* Adjust header layout for mobile */
+    header {
+        flex-direction: row; /* Keep logo, toggle, maybe social inline if they were visible */
+        justify-content: space-between; /* Space out logo and toggle */
+        align-items: center; /* Vertically center */
+        padding: 0.5rem 1rem; /* Adjusted padding */
+        min-height: auto; /* Allow height to be determined by content */
+        height: clamp(4.5rem, 12vw, 5.5rem); /* Fixed or min height for mobile */
+    }
 
     body.scrolled header {
-         min-height: clamp(6.5rem, 16vw, 7rem);
-         padding-top: 0.4rem;
-         padding-bottom: 0.4rem;
+         height: clamp(4rem, 10vw, 5rem); /* Slightly smaller when scrolled */
+         min-height: auto; /* Remove min-height constraint */
+         padding: 0.4rem 1rem; /* Adjust padding */
     }
 
-    header { backdrop-filter: blur(18px) saturate(160%); -webkit-backdrop-filter: blur(18px) saturate(160%); }
-    body.scrolled header { backdrop-filter: blur(20px) saturate(170%); -webkit-backdrop-filter: blur(20px) saturate(170%); }
+     .brand-wrap img {
+        height: clamp(3.5rem, 9vw, 4.5rem); /* Adjust logo size on mobile */
+     }
+
+     body.scrolled .brand-wrap img {
+        height: clamp(3rem, 8vw, 4rem); /* Adjust scrolled logo size on mobile */
+     }
+
+
+    /* Adjust main content margin for the new header height */
+     main {
+         margin-top: calc(clamp(4.5rem, 12vw, 5.5rem) + 1.5rem);
+     }
+
+     body.scrolled main {
+         margin-top: calc(clamp(4rem, 10vw, 5rem) + 1.5rem);
+     }
+
+
+    header::before, header::after {
+        filter: blur(50px);
+        opacity: 0.3; /* Less opaque aurora on mobile */
+        width: clamp(150px, 35vw, 250px);
+        height: clamp(150px, 35vw, 250px);
+    }
+    header::before { top: -10%; left: -5%; }
+    header::after { bottom: -15%; right: -5%; }
 }
 
+/* Even smaller screen tweaks */
+@media (max-width: 600px) {
+     header { padding: 0.5rem 0.8rem; } /* Further reduced padding */
+     body.scrolled header { padding: 0.4rem 0.8rem; }
+     header::before, header::after { filter: blur(40px); opacity: 0.2; }
+     .menu-toggle { font-size: 1.6rem; padding: 0.3rem; }
+     .mobile-menu-panel { width: 90%; max-width: none; } /* Allow wider panel on tiny screens if needed */
+     .mobile-nav-list a { font-size: 1.1rem; }
+     .mobile-social-list a { font-size: 1.3rem; width: 40px; height: 40px; }
+}
+
+/*
+    Removed the old @media (max-width: 600px) header rules that made it a column,
+    as the new mobile menu structure handles navigation below 768px.
+    The 600px queries now just adjust padding and element sizes.
+*/
+
 @media (max-width: 420px) {
-    .brand-wrap { margin-bottom: 0.2rem; }
-    .brand-wrap img { height: clamp(65px, 17vw, 80px); }
-    body.scrolled .brand-wrap img { height: clamp(55px, 14vw, 70px); }
-    header::before, header::after { filter: blur(40px); opacity: 0.25; }
-    .social-links { gap: 0.15rem; }
-    header nav { gap: 0.6rem; }
-    .social-links a { width: 34px; height: 34px; font-size: 1rem;}
-    .contact-links a { width: 45px; height: 45px; font-size: 1.2rem; }
+    .brand-wrap img { height: clamp(3rem, 10vw, 4rem); }
+    body.scrolled .brand-wrap img { height: clamp(2.8rem, 9vw, 3.5rem); }
+     .menu-toggle { font-size: 1.5rem; }
+     .mobile-menu-panel { width: 95%; }
 }
