@@ -195,8 +195,7 @@
 
 
                   // *** Filtering Logic: Show if Active AND the current page is in the page types array ***
-                  if (isActive && postUrl && postUrl.startsWith('https://www.instagram.com/') &&
-                      pageTypesArray.includes(currentPageType)) {
+                  if (isActive && postUrl && postUrl.startsWith('https://www.instagram.com/')) {
 
                       postsFound = true;
                       const card = document.createElement('div');
